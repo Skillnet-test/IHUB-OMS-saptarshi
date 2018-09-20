@@ -1,0 +1,967 @@
+<?xml version="1.0"?>
+<!--
+/* ===========================================================================
+* Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * ===========================================================================
+ * ===========================================================================
+ * NOTES
+ * <other useful comments, qualifications, etc.>
+ *
+ * MODIFIED    (MM/DD/YY)
+ *    vkaruppu  08/12/13 - XbranchMerge spurkaya_16630559_13.4.6_2 from
+ *                         rgbustores_13.4.6_generic_branch
+ *    spurkaya  05/31/13 - Added properties for cash rounding adjustment
+ *    mukothan  04/02/13 - Addede mapping for unknown order item status
+ *    jswan     01/06/12 - XbranchMerge jswan_@user@_from_vikashku_bug12930756
+ *                         from main
+ *    jswan     12/08/11 - Modified to fix gift certificate issue and remove
+ *                         processing of item tables.
+ *    jswan     10/28/11 - Added ICC_Fallback to the Entry Code value mapping.
+ *    cgreene   10/20/11 - added codes for ICC and Maestro
+ *    jswan     10/19/11 - Added Unknown to the mappings for entry code.
+ *    tksharma  09/23/11 - TR_LTM_CHK_TND table column changed from
+ *                         ID_MSK_BK_CHK to ID_BK_CHK
+ *    jswan     08/05/11 - Removed mapping for the encrypted card expiration
+ *                         date; this column is no longer in the database and
+ *                         all exports fail for this reason.
+ *    asinton   07/28/11 - removed GF_ from ID_NCRPT_ACNT_GF_CRD and
+ *                         ID_MSK_ACNT_GF_CRD, Removed column ID_ACNT_TND.
+ *    rrkohli   07/19/11 - encryption CR
+ *    jswan     09/16/10 - Changes made to support clear text RTLog output and
+ *                         export of masked Credit and Debit card numbers.
+ *    abondala  06/24/10 - renamed the column name
+ *    mchellap  06/18/10 - Updates for billpay feature
+ *    abondala  06/09/10 - updated for siebel integration
+ *    abhayg    03/18/10 - Added mapping of Total Tax Amount for Shipping Item
+ *    blarsen   02/17/10 - Making all Diners Club instances consistent. They
+ *                         are all now simply Diners (no more DinersClub).
+ *    jswan     01/06/10 - Checkin merged files.
+ *    jswan     01/06/10 - Added PO number to TTEND record.
+ *    abondala  01/02/10 - Update Header date
+ *    jswan     12/01/09 - RTLog modifications for release 13.2
+ *    jswan     08/17/09 - Modifed to use the newly created reconcile total
+ *                         from the database.
+ *    jswan     07/22/09 - Forward port branded debit card changes from 13.1x.
+ *    jswan     07/22/09 - XbranchMerge jswan_bug-8693864 from
+ *                         rgbustores_13.1x_branch
+ *    jswan     07/17/09 - Clean up tabs and error message text.
+ *    jswan     07/17/09 - Modified to support mapping branded (i.e. Visa, MC,
+ *                         etc) debit cards to distinct TenderTypeIDs.
+ *    mchellap  06/03/09 - EIT#878 PriceOverride code mapping mismatch
+ *    jswan     04/22/09 - Rework mapping order item number mapping.
+ *    jswan     04/21/09 - Result of Merge.
+ *    jswan     04/21/09 - Added mapping to CO_MDFR_RTL_PRC.CD_BAS_PRDV store
+ *                         coupon discount types.
+ *    jswan     04/20/09 - Fix issue mapping department id from unknown item
+ *                         table.
+ *    mpbarnet  04/14/09 - For table TR_PKP_TND, updated database values.
+ *    spurkaya  04/03/09 - LU_NMB_CRD_SWP_KY has been mapped to look for Swipe
+ *                         as the application puts Swipe instead of MagSwipe
+ *                         for swiped credit and debit cards.
+ *    jswan     03/12/09 - Modified to use orperatorID for Salesperson if sales
+ *                         person not available.
+ *    mchellap  03/06/09 - Changed the mapping value of JCB for table
+ *                         TR_LTM_CRDB_CRD_TN from 3130 to 3090
+ *    jswan     02/28/09 - Second code review changes.
+ *    jswan     02/26/09 - Fix tabs.
+ *    jswan     02/26/09 - Additional mapping modifications to support default
+ *                         item tax.
+ *    jswan     02/16/09 - Removed mappings for transaction reason code for
+ *                         transactions that changed from PAIDIN/PAIDOUT to
+ *                         SALE.
+ *    jswan     02/16/09 - Modified to support changes to the check tender ID
+ *                         type in TTEND.
+ *    jswan     02/13/09 - Removed reason code mappings for Order and Layaway
+ *                         transaction that used to be paidin/paidout.
+ *    jswan     02/06/09 - Modifications to support changes to the TTEND
+ *                         record.
+ *    jswan     01/22/09 - Added KitHeaderMapper to prevent export of kit
+ *                         headers.
+ *    mdecama   12/26/08 - Creating RTLOG Tax Record for Shipping Taxes.
+ *    jswan     12/11/08 - Modified SHP_RDS_SLS_RTN_TX to work like item tax.
+ *    jswan     12/11/08 - Checkin to prepare for code review.
+ *    jswan     12/04/08 - Checkin for refresh
+ *    jswan     11/26/08 - Checkin for reresh.
+ *    deepshar  11/11/08 - forward port bug 7187651
+ *
+ * ===========================================================================
+ */
+-->
+<ENTITY_MAPPER xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="DatabaseToRecordMapping.xsd">
+	<COMMENT>
+       	This is a configuration file for the ORPOS Transaction to RTLOG Mapping
+    </COMMENT>
+	<TABLE table="TR_TRN">
+		<MAP column="DC_DY_BSN" record="FileHeader" field="BusinessDate"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.BusinessDateMapper"/>
+		<MAP column="ID_STR_RT" record="FileHeader" field="LocationNumber"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.StoreNumberMapper"/>
+		<MAP column="TS_TRN_END" record="TransactionHeader" field="RegisterTransactionDate"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.DateTimeMapper"/>
+		<MAP column="AI_TRN" record="TransactionHeader" field="TransactionNumber"/>
+		<MAP column="ID_RPSTY_TND" record="TransactionHeader" field="Register"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.RegisterIDMapper"/>
+		<MAP column="ID_WS" record="TransactionHeader" field="WorkstationID"/>
+		<MAP column="ID_OPR" record="TransactionHeader" field="Cashier"/>
+		<MAP column="ID_EM" record="TransactionHeader" field="Salesperson"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.SalespersonMapper"/>
+		<MAP column="TY_TRN"
+		     record="TransactionHeader"
+		     field="TransactionType"
+		     mappingStrategyOrder="FieldMapperThenValueMapping"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ExportItemsAndTaxStatusMapper">
+            <VALUE_MAPPINGS handleNotFound="error">
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="SALE"/>
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="RETURN"/>
+                <VALUE_MAPPING DatabaseValue="3" RecordValue="PVOID"/>
+                <VALUE_MAPPING DatabaseValue="4" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="5" RecordValue="EEXCH"/>
+                <VALUE_MAPPING DatabaseValue="6" RecordValue="OPEN"/>
+                <VALUE_MAPPING DatabaseValue="7" RecordValue="CLOSE"/>
+                <VALUE_MAPPING DatabaseValue="8" RecordValue="OPEN"/>
+                <VALUE_MAPPING DatabaseValue="9" RecordValue="CLOSE"/>
+                <VALUE_MAPPING DatabaseValue="10" RecordValue="OPEN"/>
+                <VALUE_MAPPING DatabaseValue="11" RecordValue="CLOSE"/>
+                <VALUE_MAPPING DatabaseValue="12" RecordValue="LOAN"/>
+                <VALUE_MAPPING DatabaseValue="13" RecordValue="PULL"/>
+                <VALUE_MAPPING DatabaseValue="14" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="15" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="16" RecordValue="PAIDIN"/>
+                <VALUE_MAPPING DatabaseValue="17" RecordValue="PAIDOU"/>
+                <VALUE_MAPPING DatabaseValue="18" RecordValue="PAIDIN"/>
+                <VALUE_MAPPING DatabaseValue="19" RecordValue="SALE"/>
+                <VALUE_MAPPING DatabaseValue="20" RecordValue="SALE"/>
+                <VALUE_MAPPING DatabaseValue="21" RecordValue="SALE"/>
+                <VALUE_MAPPING DatabaseValue="22" RecordValue="SALE"/>
+                <VALUE_MAPPING DatabaseValue="23" RecordValue="SALE"/>
+                <VALUE_MAPPING DatabaseValue="24" RecordValue="SALE"/>
+                <VALUE_MAPPING DatabaseValue="25" RecordValue="SALE"/>
+                <VALUE_MAPPING DatabaseValue="26" RecordValue="SALE"/>
+                <VALUE_MAPPING DatabaseValue="27" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="35" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="36" RecordValue="RETURN"/>
+                <VALUE_MAPPING DatabaseValue="37" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="38" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="39" RecordValue="SALE"/>
+                <VALUE_MAPPING DatabaseValue="40" RecordValue="PAIDOU"/>
+                <VALUE_MAPPING DatabaseValue="41" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="42" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="44" RecordValue="PAIDIN"/>
+                <VALUE_MAPPING DatabaseValue="45" RecordValue="PAIDIN"/>
+                <VALUE_MAPPING DatabaseValue="46" RecordValue="PAIDOU"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+        <MAP column="FL_TRG_TRN" record="TransactionHeader" field="TransactionType">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="NOSALE"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+        <MAP column="SC_TRN" record="TransactionHeader" field="TransactionType">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="3" RecordValue="VOID"/>
+                <VALUE_MAPPING DatabaseValue="4" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="6" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="7" RecordValue="NOSALE"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+		<MAP column="TY_TRN" record="TransactionHeader" field="SubTransactionType">
+            <VALUE_MAPPINGS handleNotFound="error">
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="SALE"/>
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="RETURN"/>
+                <VALUE_MAPPING DatabaseValue="3" RecordValue="VOID"/>
+                <VALUE_MAPPING DatabaseValue="4" RecordValue="NOSALE"/>
+                <VALUE_MAPPING DatabaseValue="5" RecordValue="EXCH"/>
+                <VALUE_MAPPING DatabaseValue="6" RecordValue="OSTORE"/>
+                <VALUE_MAPPING DatabaseValue="7" RecordValue="CSTORE"/>
+                <VALUE_MAPPING DatabaseValue="8" RecordValue="OREG"/>
+                <VALUE_MAPPING DatabaseValue="9" RecordValue="CRGRC"/>
+                <VALUE_MAPPING DatabaseValue="10" RecordValue="OTILL"/>
+                <VALUE_MAPPING DatabaseValue="11" RecordValue="CTILL"/>
+                <VALUE_MAPPING DatabaseValue="12" RecordValue="LOTILL"/>
+                <VALUE_MAPPING DatabaseValue="13" RecordValue="PUTILL"/>
+                <VALUE_MAPPING DatabaseValue="14" RecordValue="STILL"/>
+                <VALUE_MAPPING DatabaseValue="15" RecordValue="RTILL"/>
+                <VALUE_MAPPING DatabaseValue="16" RecordValue="PITILL"/>
+                <VALUE_MAPPING DatabaseValue="17" RecordValue="POTILL"/>
+                <VALUE_MAPPING DatabaseValue="18" RecordValue="HOUSE"/>
+                <VALUE_MAPPING DatabaseValue="19" RecordValue="LAYINT"/>
+                <VALUE_MAPPING DatabaseValue="20" RecordValue="LAYCMP"/>
+                <VALUE_MAPPING DatabaseValue="21" RecordValue="LAYPAY"/>
+                <VALUE_MAPPING DatabaseValue="22" RecordValue="LAYDEL"/>
+                <VALUE_MAPPING DatabaseValue="23" RecordValue="ORDINT"/>
+                <VALUE_MAPPING DatabaseValue="24" RecordValue="ORDCMP"/>
+                <VALUE_MAPPING DatabaseValue="25" RecordValue="ORDCAN"/>
+                <VALUE_MAPPING DatabaseValue="26" RecordValue="ORDPAR"/>
+                <VALUE_MAPPING DatabaseValue="27" RecordValue="BANK"/>
+                <VALUE_MAPPING DatabaseValue="35" RecordValue="INSCRE"/>
+                <VALUE_MAPPING DatabaseValue="36" RecordValue="REDEEM"/>
+                <VALUE_MAPPING DatabaseValue="37" RecordValue="NTRAIN"/>
+                <VALUE_MAPPING DatabaseValue="38" RecordValue="XTRAIN"/>
+                <VALUE_MAPPING DatabaseValue="39" RecordValue="SEND"/>
+                <VALUE_MAPPING DatabaseValue="40" RecordValue="PAYOUT"/>
+                <VALUE_MAPPING DatabaseValue="41" RecordValue="NTRENT"/>
+                <VALUE_MAPPING DatabaseValue="42" RecordValue="XTRENT"/>
+                <VALUE_MAPPING DatabaseValue="44" RecordValue="BILLPY"/>
+                <VALUE_MAPPING DatabaseValue="45" RecordValue="PITILL"/>
+                <VALUE_MAPPING DatabaseValue="46" RecordValue="POTILL"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="FL_TRG_TRN" record="TransactionHeader" field="SubTransactionType">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="TRAIN"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="SC_TRN" record="TransactionHeader" field="SubTransactionType">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="3" RecordValue="CANCEL"/>
+                <VALUE_MAPPING DatabaseValue="4" RecordValue="SUSPND"/>
+                <VALUE_MAPPING DatabaseValue="6" RecordValue="SSPNDR"/>
+                <VALUE_MAPPING DatabaseValue="7" RecordValue="SSPNDC"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="TY_TRN" record="TransactionHeader" field="ReasonCode">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="18" RecordValue="HOUSE"/>
+                <VALUE_MAPPING DatabaseValue="44" RecordValue="BLPYMT"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+
+	</TABLE>
+
+	<TABLE table="TR_RTL">
+		<MAP column="MO_TND_TOT" record="TransactionHeader" field="TransactionType"
+		   fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ExchangeTransactionTypeMapper"/>
+       <!--  <MAP column="ID_ORD_EXT_NMB" record="TransactionHeader" field="CustomerOrderHeadId"/> -->
+       	<MAP column="ID_CT" record="TransactionCustomer" field="CustomerID" />
+	</TABLE>
+
+<!--     <TABLE table="TR_RTL_BPAY">
+        <MAP column="ID_ACNT" record="TransactionHeader" field="ReferenceNumber25"/>
+        <MAP column="NM_CT" record="TransactionHeader" field="ReferenceNumber26"/>
+    </TABLE> -->
+
+<!-- 	<TABLE table="TR_STR_OPN_CL">
+		<MAP column="SC_STR" record="TransactionHeader" field="TransactionType">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="DCLOSE"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+		<MAP column="SC_STR" record="TransactionHeader" field="SubTransactionType">
+			<VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="DSTORE"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="SC_STR" record="TransactionHeader" field="ReferenceNumber1"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.DCLOSEFileNumberMapper"/>
+	</TABLE>
+ -->
+	<!--
+		Condition got Checking batch count was happening before
+		the Batch count was updated. Fix for CR35717.
+		Moved the dependence check from BATCH table to STORE Check Table
+	-->
+	<!-- <TABLE table="CA_DY_BSN_BTCH">
+            <MAP column="QU_BTCH_TOT" record="TransactionHeader" field="ReferenceNumber1"
+		fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.DCLOSEFileNumberMapper"/>
+	</TABLE>-->
+
+	<!-- TABLE table="TR_TL_OPN_CL">
+		<MAP column="SC_TL" record="TransactionHeader" field="TransactionType">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="TOTAL"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+		<MAP column="SC_TL" record="TransactionHeader" field="SubTransactionType">
+			<VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="CTILLT"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+	</TABLE -->
+<!-- 
+	<TABLE table="TR_WS_OPN_CL">
+		<MAP column="SC_TML_WS" record="TransactionHeader" field="SubTransactionType">
+			<VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="CRGRC"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+	</TABLE> -->
+
+	<TABLE table="TR_LTM_SLS_RTN">
+		<MAP column="ID_ITM" record="TransactionItem" field="Item"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ItemIDMapper"/>
+		     
+		<MAP column="ID_MRHRC_GP" record="TransactionItem" field="Department" />
+		<!-- <MAP column="ID_MRHRC_GP" record="TransactionItem" field="Department"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ItemDepartmentMapper"/>
+		<MAP column="AI_LN_ITM" record="TransactionItem" field="Department"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.UnknownItemDepartmentMapper"/> -->
+		<MAP column="LU_UOM_SLS" record="TransactionItem" field="UnitOfMeasure"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.UnitOfMeasureMapper"/>
+		<MAP column="QU_ITM_LM_RTN_SLS" record="TransactionItem" field="ItemStatus"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ItemStatusMapper"/>
+		<MAP column="MO_EXTN_LN_ITM_RTN" record="TransactionItem" field="UnitRetail"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ItemPriceMapper"/>
+		<MAP column="LU_MTH_ID_ENR" record="TransactionItem" field="Item_swiped_ind">
+            <VALUE_MAPPINGS handleNotFound="error">
+				<VALUE_MAPPING DatabaseValue="KEY" RecordValue="N"/>
+				<VALUE_MAPPING DatabaseValue="SCAN" RecordValue="Y"/>
+				<VALUE_MAPPING DatabaseValue="MICR" RecordValue="Y"/>
+				<VALUE_MAPPING DatabaseValue="MSR" RecordValue="Y"/>
+				<VALUE_MAPPING DatabaseValue="SMCD" RecordValue="Y"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="RC_RTN_MR" record="TransactionItem" field="ReturnReasonCode">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="11" RecordValue="19"/> <!-- CustomerChangedMind -->
+				<VALUE_MAPPING DatabaseValue="33" RecordValue="02"/> <!-- Defective -->
+                <VALUE_MAPPING DatabaseValue="45" RecordValue="06"/> <!-- Wrong Product -->
+				<VALUE_MAPPING DatabaseValue="55" RecordValue="20"/> <!-- PriceAdjustment -->
+                <VALUE_MAPPING DatabaseValue="66" RecordValue="01"/> <!-- Product Issue -->
+                <VALUE_MAPPING DatabaseValue="77" RecordValue="03"/> <!-- Web Order  -->
+                <VALUE_MAPPING DatabaseValue="997" RecordValue="04"/> <!-- Web Order Item Cancelled Externally And Refunded in POS  -->
+                <VALUE_MAPPING DatabaseValue="998" RecordValue="05"/> <!-- Web Order Item Returned Externally And Refunded in POS  -->
+            </VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="ID_TRN_ORG" record="TransactionHeader" field="ReferenceNumber1"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.TransactionReferenceNumber1Mapper" />
+		<MAP column="MO_FE_RSTK" record="ItemRestockingFee" field="UnitRetail"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.RestockingFeeMapper"/>
+		<MAP column="MO_PRN_PRC" record="TransactionItem" field="OriginalUnitRetail"/>
+		<!-- This does not actually map a value to the "DropShipInd" field; it prevents kit headers from
+		     being exported.  The "DropShipInd" is not used by ORPOS. -->
+		<MAP column="LU_KT_ST" record="TransactionItem" field="DropShipInd"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.KitHeaderMapper"/>
+		<MAP column="ID_NMB_SRZ" record="TransactionItem" field="UINumber"/>
+		<MAP column="MO_VAT_LN_ITM_RTN" record="TransactionItem" field="TotalTaxAmount"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ItemTotalTaxAmountMapper"/>
+		<!--  <MAP column="WEB_LN_ITM_SEQ" record="TransactionItem" field="CustomerOrderLineNo"/> -->
+	</TABLE>
+
+	<TABLE table="TR_LTM_SLS_RTN_ORD">
+		<MAP column="ST_ITM_ORD" record="TransactionItem" field="ItemStatus"
+		     mappingStrategyOrder="FieldMapperThenValueMapping"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.OrderItemStatusMapper">
+            <VALUE_MAPPINGS handleNotFound="error">
+                <VALUE_MAPPING DatabaseValue="-1" RecordValue="ORU"/>
+                <VALUE_MAPPING DatabaseValue="0" RecordValue="ORI"/>
+                <VALUE_MAPPING DatabaseValue="3" RecordValue="ORC"/>
+                <VALUE_MAPPING DatabaseValue="4" RecordValue="ORD"/>
+                <VALUE_MAPPING DatabaseValue="7" RecordValue="ORC"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+		<MAP column="AI_ORD_LN_ITM" record="TransactionItem" field="CustomerOrderLineNo" fieldMapper="nbty.retail.stores.exportfile.rtlog.fieldmappers.NbtyOrderItemSequenceNumberMapper"/>
+		<MAP column="ID_ORD" record="TransactionItem" field="CustomerOrderNumber" fieldMapper="nbty.retail.stores.exportfile.rtlog.fieldmappers.NbtyItemSaleTypeMapper" />
+		<MAP column="DC_ORD_DY_BSN" record="TransactionItem" field="CustomerOrderDate" fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.BusinessDateMapper"/>
+	</TABLE>
+
+	<!-- <TABLE table="TR_VD_PST">
+		<MAP column="ID_WS_VD"  record="TransactionHeader" field="OriginalWorkstationID"/>
+		<MAP column="AI_TRN_VD" record="TransactionHeader" field="OriginalTransactionNumber"/>
+		This is actually the Till not the Register (using this column as a trigger for the mapper.
+		     See the mapper class for details.  
+		<MAP column="ID_WS_VD"  record="TransactionHeader" field="Orig_reg_no"
+             fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.OriginalTransactionTillMapper"/>
+		<MAP column="RC_TR_VD_PST"  record="TransactionHeader" field="ReasonCode">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="PVAE"/>
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="PVCCM"/>
+                <VALUE_MAPPING DatabaseValue="3" RecordValue="PVO"/>
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="PVIP"/>
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="PVDI"/>
+                <VALUE_MAPPING DatabaseValue="3" RecordValue="PVCCM"/>
+                <VALUE_MAPPING DatabaseValue="4" RecordValue="PVAE"/>
+                <VALUE_MAPPING DatabaseValue="5" RecordValue="PVOFP"/>
+                <VALUE_MAPPING DatabaseValue="6" RecordValue="PVO"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+	</TABLE> -->
+
+<!-- 	<TABLE table="TR_LON_TND">
+		<MAP column="RC_LON_TND"  record="TransactionHeader" field="ReasonCode">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="53" RecordValue="NSF"/>
+                <VALUE_MAPPING DatabaseValue="54" RecordValue="TPIVMR"/>
+                <VALUE_MAPPING DatabaseValue="55" RecordValue="TPIMSC"/>
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="PAYRL"/>
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="PAYRL"/>
+                <VALUE_MAPPING DatabaseValue="56" RecordValue="TPOP"/>
+                <VALUE_MAPPING DatabaseValue="57" RecordValue="TPOS"/>
+                <VALUE_MAPPING DatabaseValue="58" RecordValue="TPOE"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+        <MAP column="MO_LON_TND"  record="OtherTransactionTender" field="TenderAmount"/>
+	</TABLE>
+
+	<TABLE table="TR_PKP_TND">
+		<MAP column="RC_PKP_TND"  record="TransactionHeader" field="ReasonCode">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="53" RecordValue="NSF"/>
+                <VALUE_MAPPING DatabaseValue="54" RecordValue="TPIVMR"/>
+                <VALUE_MAPPING DatabaseValue="55" RecordValue="TPIMSC"/>
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="PAYRL"/>
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="PAYRL"/>
+                <VALUE_MAPPING DatabaseValue="56" RecordValue="TPOP"/>
+                <VALUE_MAPPING DatabaseValue="57" RecordValue="TPOS"/>
+                <VALUE_MAPPING DatabaseValue="58" RecordValue="TPOE"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+        <MAP column="MO_PKP_TND"  record="OtherTransactionTender" field="TenderAmount"
+		     mappingStrategyOrder="UseInFieldMapper"
+             fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.TenderPickupAmountMapper">
+            <VALUE_MAPPINGS handleNotFound="error">
+                <VALUE_MAPPING DatabaseValue="CASH" RecordValue="1000"/>
+                <VALUE_MAPPING DatabaseValue="CHCK" RecordValue="2000"/>
+                <VALUE_MAPPING DatabaseValue="CASHAC" RecordValue="1010"/>
+                <VALUE_MAPPING DatabaseValue="CHCKAC" RecordValue="2050"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+        <MAP column="TY_TND"  record="OtherTransactionTender" field="TenderTypeGroup">
+            <VALUE_MAPPINGS handleNotFound="error">
+                <VALUE_MAPPING DatabaseValue="CASH" RecordValue="CASH"/>
+                <VALUE_MAPPING DatabaseValue="CHCK" RecordValue="CHECK"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+	</TABLE>
+
+	<TABLE table="TR_RCV_FND">
+		<MAP column="RC_RCV_DSB"  record="TransactionHeader" field="ReasonCode">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="53" RecordValue="NSF"/>
+                <VALUE_MAPPING DatabaseValue="54" RecordValue="TPIVMR"/>
+                <VALUE_MAPPING DatabaseValue="55" RecordValue="TPIMSC"/>
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="PAYRL"/>
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="PAYRL"/>
+                <VALUE_MAPPING DatabaseValue="56" RecordValue="TPOP"/>
+                <VALUE_MAPPING DatabaseValue="57" RecordValue="TPOS"/>
+                <VALUE_MAPPING DatabaseValue="58" RecordValue="TPOE"/>
+                <VALUE_MAPPING DatabaseValue="59" RecordValue="TPSE"/>
+                <VALUE_MAPPING DatabaseValue="60" RecordValue="TPOI"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+        <MAP column="MO_RCV_FND"  record="OtherTransactionTender" field="TenderAmount"
+             fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.TenderFundAmountMapper"/>
+	</TABLE>
+	<TABLE table="TR_NBTY_CSH_IN_OUT_FND">
+		<MAP column="REASON_CODE"  record="TransactionHeader" field="ReasonCode" 
+			 fieldMapper="nbty.retail.stores.exportfile.rtlog.fieldmappers.NbtyCashInCashOutReasonCodeMapper">
+            <VALUE_MAPPINGS  handleNotFound="nextMapping">
+                <VALUE_MAPPING DatabaseValue="01" RecordValue="CHGDLV"/>
+                <VALUE_MAPPING DatabaseValue="02" RecordValue="CSHDC"/>
+                <VALUE_MAPPING DatabaseValue="03" RecordValue="DUPBDC"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+        </MAP>
+        <MAP column="REASON_CODE"  record="TransactionHeader" field="ReasonCode">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="01" RecordValue="WGSPYO"/>
+                <VALUE_MAPPING DatabaseValue="02" RecordValue="CHGPUR"/>
+                <VALUE_MAPPING DatabaseValue="03" RecordValue="NWSTOL"/>
+                <VALUE_MAPPING DatabaseValue="04" RecordValue="CSHDCR"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+        <MAP column="MO_IN_FND"  record="OtherTransactionTender" field="TenderAmount"
+             fieldMapper="nbty.retail.stores.exportfile.rtlog.fieldmappers.NbtyCashInCashOutTenderAmountMapper"/>
+	</TABLE>
+
+	<TABLE table="TR_SLS_PS_NO">
+		<MAP column="RC_SLS_NO"  record="TransactionHeader" field="ReasonCode">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="NSCC"/>
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="NSCFR"/>
+            </VALUE_MAPPINGS>
+	   </MAP>
+	</TABLE> -->
+
+	<TABLE table="OR_ORD">
+        <MAP column="TY_ORD" record="TransactionHeader" field="TransactionType">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="SPLORD"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+		<!-- <MAP column="ID_ORD" record="TransactionHeader" field="CustomerOrderHeadId"/>
+		<MAP column="DC_DY_BSN" record="TransactionHeader" field="CustomerOrderHeadDate"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.BusinessDateMapper"/> -->
+	    <!-- Checking to see if no tender was paid on a completed order (i.e. deposit covers full amount) -->
+		<MAP column="MO_BLNC_ORD" record="OtherTransactionTender" field="TenderAmount"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.NoTenderForOrderCompleteMapper"/>
+		<MAP column="CHL_ORD_CRT" record="TransactionHeader" field="ReferenceNumber27">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="0" RecordValue="APP"/>
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="ICC"/>
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="OIS"/>
+                <VALUE_MAPPING DatabaseValue="3" RecordValue="INET"/>
+            </VALUE_MAPPINGS>
+        </MAP>	
+    </TABLE>
+
+	<TABLE table="TR_LTM_TND">
+		<MAP column="TY_TND"  record="TransactionTender" field="TenderTypeGroup">
+            <VALUE_MAPPINGS handleNotFound="error">
+                <VALUE_MAPPING DatabaseValue="CASH" RecordValue="CASH"/>
+                <VALUE_MAPPING DatabaseValue="CRDT" RecordValue="CCARD"/>
+                <VALUE_MAPPING DatabaseValue="CHCK" RecordValue="CHECK"/>
+                <VALUE_MAPPING DatabaseValue="ECHK" RecordValue="CHECK"/>
+                <VALUE_MAPPING DatabaseValue="TRAV" RecordValue="CHECK"/>
+                <VALUE_MAPPING DatabaseValue="MBCK" RecordValue="CHECK"/>
+                <VALUE_MAPPING DatabaseValue="QPON" RecordValue="COUPON"/>
+                <VALUE_MAPPING DatabaseValue="DBIT" RecordValue="DCARD"/>
+                <VALUE_MAPPING DatabaseValue="MNYO" RecordValue="MORDER"/>
+                <VALUE_MAPPING DatabaseValue="GCRD" RecordValue="VOUCH"/>
+                <VALUE_MAPPING DatabaseValue="GICT" RecordValue="VOUCH"/>
+                <VALUE_MAPPING DatabaseValue="STCR" RecordValue="VOUCH"/>
+                <VALUE_MAPPING DatabaseValue="MACT" RecordValue="VOUCH"/>
+                <VALUE_MAPPING DatabaseValue="PRCH" RecordValue="VOUCH"/>
+                <VALUE_MAPPING DatabaseValue="VOUCH" RecordValue="VOUCH"/>
+                <VALUE_MAPPING DatabaseValue="NSQPON" RecordValue="COUPON"/>
+                <VALUE_MAPPING DatabaseValue="GVCR" RecordValue="VOUCH"/>
+                <VALUE_MAPPING DatabaseValue="LVCR" RecordValue="VOUCH"/>
+                <VALUE_MAPPING DatabaseValue="PYPL" RecordValue="PYPL"/>
+                <VALUE_MAPPING DatabaseValue="ETND" RecordValue="ETND"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+		<MAP column="TY_TND"  record="TransactionTender" field="TenderTypeID">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="CASH" RecordValue="1000"/>
+                <VALUE_MAPPING DatabaseValue="CHCK" RecordValue="2000"/>
+                <VALUE_MAPPING DatabaseValue="ECHK" RecordValue="2030"/>
+                <VALUE_MAPPING DatabaseValue="TRAV" RecordValue="2020"/>
+                <VALUE_MAPPING DatabaseValue="MBCK" RecordValue="2040"/>
+                <VALUE_MAPPING DatabaseValue="QPON" RecordValue="5000"/>
+                <VALUE_MAPPING DatabaseValue="DBIT" RecordValue="8000"/>
+                <VALUE_MAPPING DatabaseValue="MNYO" RecordValue="6000"/>
+                <VALUE_MAPPING DatabaseValue="GCRD" RecordValue="4040"/>
+                <VALUE_MAPPING DatabaseValue="GICT" RecordValue="4030"/>
+                <VALUE_MAPPING DatabaseValue="STCR" RecordValue="4050"/>
+                <VALUE_MAPPING DatabaseValue="MACT" RecordValue="4060"/>
+                <VALUE_MAPPING DatabaseValue="PRCH" RecordValue="4070"/>
+                <VALUE_MAPPING DatabaseValue="VOUCH" RecordValue="4080"/>
+                <VALUE_MAPPING DatabaseValue="NSQPON" RecordValue="7001"/>
+                <VALUE_MAPPING DatabaseValue="GVCR" RecordValue="7002"/>
+                <VALUE_MAPPING DatabaseValue="LVCR" RecordValue="7003"/>
+                <VALUE_MAPPING DatabaseValue="PYPL" RecordValue="7004"/>
+                <VALUE_MAPPING DatabaseValue="ETND" RecordValue="7005"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+
+        <MAP column="MO_ITM_LN_TND"  record="TransactionTender" field="TenderAmount"
+             fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.TenderAmountMapper"/>
+        <MAP column="DE_FRG_CNY"  record="TransactionTender" field="TenderTypeID"
+             fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ForeignTenderTypeIDMapper"/>
+        <MAP column="DE_FRG_CNY"  record="TransactionTender" field="OriginalCurrency"/>
+        <MAP column="FRG_MO_ITM_LN_TND"  record="TransactionTender" field="OriginalCurrencyAmount"/>
+	</TABLE>
+
+  <!--   <TABLE table="TR_LTM_TND_CHN">
+        <MAP column="TY_TND"  
+             record="TransactionTender" 
+             field="TenderTypeGroup"
+             mappingStrategyOrder="FieldMapperThenValueMapping"
+             fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ExportRoundingAdjustment">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="ROUNDING ADJUSTMENT" RecordValue="CASH"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+        
+        <MAP column="TY_TND"  record="TransactionTender" field="TenderTypeID">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="ROUNDING ADJUSTMENT" RecordValue="1020"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+
+        <MAP column="MO_LN_ITM_TND_CHN"  record="TransactionTender" field="TenderAmount"
+             fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.RoundingAdjustmentAmountMapper"/>
+    </TABLE> -->
+
+	<TABLE table="TR_LTM_CRDB_CRD_TN">
+        <!-- This column map handles the mapping of TenderTypeIDs for Credit Cards -->
+        <MAP column="ID_ISSR_TND_MD"  record="TransactionTender" field="TenderTypeID"
+             mappingStrategyOrder="ValueMappingThenFieldMapper" fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.SetUnknownTenderTypeMapper">
+             <VALUE_MAPPINGS handleNotFound="nextMapping">
+                <VALUE_MAPPING DatabaseValue="Visa" RecordValue="3000"/>
+                <VALUE_MAPPING DatabaseValue="MasterCard" RecordValue="3010"/>
+                <VALUE_MAPPING DatabaseValue="AmEx" RecordValue="3020"/>
+                <VALUE_MAPPING DatabaseValue="Discover" RecordValue="3030"/>
+                <VALUE_MAPPING DatabaseValue="Diners" RecordValue="3040"/>
+                <VALUE_MAPPING DatabaseValue="HouseCard" RecordValue="3120"/>
+                <VALUE_MAPPING DatabaseValue="JCB" RecordValue="3090"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+        <!-- This column map handles the mapping of TenderTypeIDs for Debit Cards;
+             for product the application always sends '8000', the map gives implementors
+             the option to set them to distinct values.  It is possible this will
+             approach the Tender Type ID will change in the next release. -->
+        <MAP column="ID_ISSR_TND_MD"  record="TransactionTender" field="TenderTypeID"
+             mappingStrategyOrder="UseInFieldMapper" fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.DebitCardTenderTypeMapper">
+             <VALUE_MAPPINGS handleNotFound="nextMapping">
+     	        <VALUE_MAPPING DatabaseValue="Visa" RecordValue="8000"/>
+                <VALUE_MAPPING DatabaseValue="MasterCard" RecordValue="8000"/>
+                <VALUE_MAPPING DatabaseValue="AmEx" RecordValue="8000"/>
+                <VALUE_MAPPING DatabaseValue="Discover" RecordValue="8000"/>
+                <VALUE_MAPPING DatabaseValue="Diners" RecordValue="8000"/>
+                <VALUE_MAPPING DatabaseValue="HouseCard" RecordValue="8000"/>
+                <VALUE_MAPPING DatabaseValue="JCB" RecordValue="8000"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+        <MAP column="ID_MSK_ACNT_CRD"  record="TransactionTender" field="Cc_no"/>
+        <MAP column="LU_AJD_CR_DB"  record="TransactionTender" field="Cc_auth_no"/>
+        <MAP column="LU_MTH_AZN"  record="TransactionTender" field="ccAuthorizationSource"
+		     mappingStrategyOrder="UseInFieldMapper"
+             fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.DefaultAuthorizationAndConditionsMapper">
+            <VALUE_MAPPINGS handleNotFound="error">
+                <VALUE_MAPPING DatabaseValue="Automatic" RecordValue="E"/>
+                <VALUE_MAPPING DatabaseValue="System" RecordValue="E"/>
+                <VALUE_MAPPING DatabaseValue="Manual" RecordValue="M"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="TY_TND"  record="TransactionTender" field="ccCardholderVerification"
+		   fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.CardholderVerificationMapper"/>
+        <MAP column="LU_NMB_CRD_SWP_KY"  record="TransactionTender" field="ccEntryMode">
+            <VALUE_MAPPINGS handleNotFound="error">
+                <VALUE_MAPPING DatabaseValue="ICC" RecordValue="MSR"/>
+                <VALUE_MAPPING DatabaseValue="ICC_Fallback" RecordValue="T"/>
+                <VALUE_MAPPING DatabaseValue="Manual" RecordValue="T"/>
+                <VALUE_MAPPING DatabaseValue="MSR" RecordValue="MSR"/>
+                <VALUE_MAPPING DatabaseValue="MagSwipe" RecordValue="MSR"/>
+                <VALUE_MAPPING DatabaseValue="Swipe" RecordValue="MSR"/>
+                <VALUE_MAPPING DatabaseValue="Unknown" RecordValue="T"/>
+                <VALUE_MAPPING DatabaseValue="NFC" RecordValue="NFC"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+        <MAP column="LU_MTH_AZN"  record="TransactionTender" field="ccSpecialCondition"
+		     mappingStrategyOrder="UseInFieldMapper"
+             fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.DefaultAuthorizationAndConditionsMapper">
+            <VALUE_MAPPINGS handleNotFound="error">
+                <VALUE_MAPPING DatabaseValue="Automatic" RecordValue="E"/>
+                <VALUE_MAPPING DatabaseValue="System" RecordValue="E"/>
+                <VALUE_MAPPING DatabaseValue="Manual" RecordValue="P"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+	</TABLE>
+
+	<!-- <TABLE table="TR_ITM_CPN_TND">
+		<MAP column="UC_CPN_SC" record="TransactionTender" field="CouponNumber"/>
+	</TABLE>
+
+     <TABLE table="TR_LTM_CHK_TND">
+		<MAP column="ID_BK_CHK" record="TransactionTender" field="ChequeAccountNumber"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.CheckMaskAccountNumberMapper" />
+		<MAP column="AI_CHK" record="TransactionTender" field="ChequeNumber" />
+		<MAP column="TY_ID_PRSL_RQ" record="TransactionTender" field="IdentificationMethod">
+			<VALUE_MAPPINGS handleNotFound="error">
+				<VALUE_MAPPING DatabaseValue="10" RecordValue="DRVRLC" />
+				<VALUE_MAPPING DatabaseValue="20" RecordValue="PASSPT" />
+				<VALUE_MAPPING DatabaseValue="30" RecordValue="MILTID" />
+				<VALUE_MAPPING DatabaseValue="40" RecordValue="STRGID" />
+				<VALUE_MAPPING DatabaseValue="50" RecordValue="STUDID" />
+				<VALUE_MAPPING DatabaseValue="60" RecordValue="RSALID" />
+			</VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="ID_MSK_PRSL_AZN" record="TransactionTender" field="IdentificationId" />
+	</TABLE> -->
+
+	<TABLE table="TR_LTM_GF_CF_TND">
+		<MAP column="ID_NMB_SRZ_GF_CF" record="TransactionTender" field="Voucher_no"/>
+		<MAP column="TY_SB_GF_CF"      record="TransactionTender" field="Voucher_no"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.MallCertificateNumberMapper"/>
+	</TABLE>
+
+	<!-- <TABLE table="TR_LTM_GF_CRD_TND">
+		Use the credit card no. mapper for gift card since they're both handled the same way.
+		<MAP column="ID_NCRPT_ACNT_CRD" record="TransactionTender" field="Voucher_no"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.CreditCardNoMapper"/>
+	</TABLE>
+ -->
+	<TABLE table="TR_LTM_CR_STR_TND">
+		<MAP column="ID_CR_STR" record="TransactionTender" field="Voucher_no"/>
+	</TABLE>
+<!-- 
+	<TABLE table="TR_LTM_PRCH_ORD_TND">
+		<MAP column="PRCH_ORD_NMB" record="TransactionTender" field="Voucher_no"/>
+	</TABLE> -->
+
+	<TABLE table="TR_LTM_RTL_TRN">
+		<MAP column="FL_VD_LN_ITM" record="TransactionItem" field="ItemStatus"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ItemVoidStatusMapper"/>
+	</TABLE>
+
+	<!-- <TABLE table="AS_LY">
+		<MAP column="ID_LY" record="TransactionHeader" field="CustomerOrderHeadId"/>
+		<MAP column="DC_DY_BSN_ORGL" record="TransactionHeader" field="CustomerOrderHeadDate"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.BusinessDateMapper"/>
+		<MAP column="MO_LY_FE_CRT" record="TransactionFee" field="UnitRetail"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.LayawayFeeAmountMapper"/>
+		<MAP column="MO_LY_FE_DLT" record="LayawayDeletionFee" field="UnitRetail"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.LayawayFeeAmountMapper"/>
+	</TABLE>
+
+	<TABLE table="TR_RTL_LY">
+        The status in this column affects the TransactionItem.ItemStatus field of each item,
+             not the TransactionHeader.ReferenceNumber4 field.  Some target is required, though,
+             even if it is bogus.
+		<MAP column="ST_LY" record="TransactionHeader" field="ReferenceNumber4"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.LayawayItemStatusMapper"/>
+	</TABLE>
+
+    <TABLE table="CO_MDFR_CMN">
+		<MAP column="ID_EM" record="TransactionItem" field="Salesperson"/>
+	</TABLE> -->
+
+    <TABLE table="TR_LTM_SLS_RTN_TX">
+        <MAP column="ID_ATHY_TX" record="ItemGlobalTax" field="TaxAuthority"/>
+        <MAP column="PE_TX" record="ItemGlobalTax" field="TaxRate"/>
+        <MAP column="MO_TX_RTN_SLS" record="ItemGlobalTax" field="TaxAmount"
+            fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ItemTaxAmountMapper"/>
+        <MAP column="ID_ATHY_TX" record="ItemGlobalTax" field="TaxCode"
+            mappingStrategyOrder="ValueMappingThenFieldMapper"
+            fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ItemTaxCodeMapper">
+        <!-- The Tax Authority ID is a numeric data type and will never be set to either
+             'DefaultTax' or 'ManualTax' ItemTaxCodeMapper detects if the tax is manual or
+             default and uses this mapping to externalize the values sent to ReSA. -->
+            <VALUE_MAPPINGS handleNotFound="nextMapping">
+                <VALUE_MAPPING DatabaseValue="DefaultTax" RecordValue="DFLTTX"/>
+                <VALUE_MAPPING DatabaseValue="ManualTax"  RecordValue="MANLTX"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+    </TABLE>
+
+	<!-- <TABLE table="TR_RDM">
+		<MAP column="RDM_ID" record="TransactionItem" field="Item"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.RedeemedItemMapper"/>
+	</TABLE>-->
+
+	<!--  Temporary Discount - PromotionLineItem Table  -->
+	<TABLE table="TR_LTM_PRM">
+		<MAP column="ID_PRM" record="ItemDiscount" field="DiscountReferenceNumber">
+            <VALUE_MAPPINGS handleNotFound="nextMapping">
+                <VALUE_MAPPING DatabaseValue="-1" RecordValue="0"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="ID_PRM" record="ItemDiscount" field="RMSPromotionType"
+			fieldMapper="nbty.retail.stores.exportfile.rtlog.fieldmappers.NbtyPromotionTypeMapper" />
+		<MAP column="ID_PRM" record="ItemDiscount" field="Quantity"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.DiscountItemQuantityMapper"/>
+		<MAP column="MO_MDFR_RT_PRC" record="ItemDiscount" field="UnitDiscountAmount"
+		    fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.AmountMapper"/>
+		<MAP column="ID_PRM_CMP" record="ItemDiscount" field="PromoComponent">
+            <VALUE_MAPPINGS handleNotFound="nextMapping">
+                <VALUE_MAPPING DatabaseValue="-1" RecordValue="0"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+	</TABLE> 
+
+	<!-- RetailPriceModifier -->
+	<TABLE table="CO_MDFR_RTL_PRC">
+		<MAP column="ID_PRM" record="ItemDiscount" field="DiscountReferenceNumber">
+            <VALUE_MAPPINGS handleNotFound="nextMapping">
+                <VALUE_MAPPING DatabaseValue="-1" RecordValue="0"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="ID_PRM" record="ItemDiscount" field="RMSPromotionType"
+			fieldMapper="nbty.retail.stores.exportfile.rtlog.fieldmappers.NbtyPromotionTypeMapper" />
+        <MAP column="RC_MDFR_RT_PRC"  record="ItemDiscount" field="DiscountType">
+            <VALUE_MAPPINGS handleNotFound="success">
+				<!-- ItemDiscountPercent -->
+                <VALUE_MAPPING DatabaseValue="2204" RecordValue="SATSPL"/>
+                <VALUE_MAPPING DatabaseValue="2212" RecordValue="SENCIT"/>
+                <VALUE_MAPPING DatabaseValue="2220" RecordValue="CMPSPL"/>
+                <VALUE_MAPPING DatabaseValue="2238" RecordValue="SCOUP"/>
+				<!-- ItemDiscountAmount -->
+                <VALUE_MAPPING DatabaseValue="2303" RecordValue="SATSPL"/>
+                <VALUE_MAPPING DatabaseValue="2311" RecordValue="SENCIT"/>
+                <VALUE_MAPPING DatabaseValue="2329" RecordValue="CMPSPL"/>
+                <VALUE_MAPPING DatabaseValue="2337" RecordValue="SCOUP"/>
+				<!-- TransactionDiscountPercent -->
+                <VALUE_MAPPING DatabaseValue="2006" RecordValue="SATSPL"/>
+                <VALUE_MAPPING DatabaseValue="2014" RecordValue="SENCIT"/>
+                <VALUE_MAPPING DatabaseValue="2022" RecordValue="CMPSPL"/>
+                <VALUE_MAPPING DatabaseValue="2030" RecordValue="SCOUP"/>
+                <!-- TransactionDiscountAmount -->
+                <VALUE_MAPPING DatabaseValue="2105" RecordValue="SATSPL"/>
+                <VALUE_MAPPING DatabaseValue="2113" RecordValue="SENCIT"/>
+                <VALUE_MAPPING DatabaseValue="2121" RecordValue="CMPSPL"/>
+                <VALUE_MAPPING DatabaseValue="2139" RecordValue="SCOUP"/>
+				<!-- MarkdownAmountReasonCodes / MarkdownPercentReasonCodes -->
+                <VALUE_MAPPING DatabaseValue="2402" RecordValue="SATSPL"/>
+                <VALUE_MAPPING DatabaseValue="2410" RecordValue="SENCIT"/>
+                <VALUE_MAPPING DatabaseValue="2428" RecordValue="CMPSPL"/>
+                <VALUE_MAPPING DatabaseValue="2236" RecordValue="SCOUP"/>
+				<!-- PriceOverride -->
+                <VALUE_MAPPING DatabaseValue="3" RecordValue="D"/>
+                <VALUE_MAPPING DatabaseValue="5" RecordValue="S"/>
+                <VALUE_MAPPING DatabaseValue="2" RecordValue="CP"/>
+                <VALUE_MAPPING DatabaseValue="1" RecordValue="AP"/>
+				<VALUE_MAPPING DatabaseValue="4" RecordValue="MS"/>
+                <VALUE_MAPPING DatabaseValue="6" RecordValue="D"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<!-- if a valid reason code is not found, then it may be an employee discount -->
+        <MAP column="CD_BAS_PRDV"  record="ItemDiscount" field="DiscountType">
+            <VALUE_MAPPINGS handleNotFound="success">
+				<!-- EmployeeDiscount -->
+                <VALUE_MAPPING DatabaseValue="5" RecordValue="EMPDSC"/>
+                <VALUE_MAPPING DatabaseValue="3" RecordValue="SCOUP"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<!-- also update rms promo type, when it is an employee discount -->
+        <MAP column="CD_BAS_PRDV"  record="ItemDiscount" field="RMSPromotionType">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <!-- EmployeeDiscount -->
+                <VALUE_MAPPING DatabaseValue="5" RecordValue="1005"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="ID_DSC_REF" record="ItemDiscount" field="CouponNumber"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.CouponNumberMapper" />
+		<MAP column="ID_PRM" record="ItemDiscount" field="Quantity"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.DiscountItemQuantityMapper"/>
+		<MAP column="MO_MDFR_RT_PRC" record="ItemDiscount" field="UnitDiscountAmount"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.DiscountAmountMapper" />
+		<MAP column="ID_PRM_CMP" record="ItemDiscount" field="PromoComponent">
+            <VALUE_MAPPINGS handleNotFound="nextMapping">
+                <VALUE_MAPPING DatabaseValue="-1" RecordValue="0"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+	</TABLE>
+
+	<TABLE table="TR_MDFR_SLS_RTN_PRC">
+		<MAP column="ID_PRM" record="ItemDiscount" field="DiscountReferenceNumber">
+            <VALUE_MAPPINGS handleNotFound="nextMapping">
+                <VALUE_MAPPING DatabaseValue="-1" RecordValue="0"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+		<MAP column="ID_PRM" record="ItemDiscount" field="RMSPromotionType"
+			fieldMapper="nbty.retail.stores.exportfile.rtlog.fieldmappers.NbtyPromotionTypeMapper" />
+        <MAP column="RC_MDFR_RT_PRC"  record="ItemDiscount" field="DiscountType">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <VALUE_MAPPING DatabaseValue="2006" RecordValue="SATSPL"/>
+                <VALUE_MAPPING DatabaseValue="2014" RecordValue="SENCIT"/>
+                <VALUE_MAPPING DatabaseValue="2022" RecordValue="CMPSPL"/>
+                <VALUE_MAPPING DatabaseValue="2030" RecordValue="SCOUP"/>
+                <VALUE_MAPPING DatabaseValue="2105" RecordValue="SATSPL"/>
+                <VALUE_MAPPING DatabaseValue="2113" RecordValue="SENCIT"/>
+                <VALUE_MAPPING DatabaseValue="2121" RecordValue="CMPSPL"/>
+                <VALUE_MAPPING DatabaseValue="2139" RecordValue="SCOUP"/>
+                <VALUE_MAPPING DatabaseValue="6"    RecordValue="SCZDSC"/>
+                <VALUE_MAPPING DatabaseValue="7"    RecordValue="VGTDSC"/>
+                <VALUE_MAPPING DatabaseValue="8"    RecordValue="VGNDSC"/>
+                <VALUE_MAPPING DatabaseValue="9"    RecordValue="NTDDSC"/>
+                <VALUE_MAPPING DatabaseValue="10"    RecordValue="EXCDSC"/>
+                <VALUE_MAPPING DatabaseValue="11"    RecordValue="TVPDSC"/>
+                <VALUE_MAPPING DatabaseValue="12"    RecordValue="BBCDSC"/>
+                <VALUE_MAPPING DatabaseValue="13"    RecordValue="CTDDISC"/>
+                <VALUE_MAPPING DatabaseValue="14"    RecordValue="AHZDSC"/>
+                <VALUE_MAPPING DatabaseValue="999"    RecordValue="RWDDSC"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+        <!-- if a valid reason code is not found, then it may be an employee discount -->
+        <MAP column="RC_MDFR_RT_PRC"  record="ItemDiscount" field="DiscountType">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <!-- EmployeeDiscount -->
+                <VALUE_MAPPING DatabaseValue="5" RecordValue="EMPDSC"/>
+                <VALUE_MAPPING DatabaseValue="3" RecordValue="SCOUP"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+        <!-- also update rms promo type, when it is an employee discount -->
+        <MAP column="RC_MDFR_RT_PRC"  record="ItemDiscount" field="RMSPromotionType">
+            <VALUE_MAPPINGS handleNotFound="success">
+                <!-- EmployeeDiscount -->
+                <VALUE_MAPPING DatabaseValue="5" RecordValue="1005"/>
+            </VALUE_MAPPINGS>
+        </MAP>
+		<MAP column="ID_DSC_REF" record="ItemDiscount" field="CouponNumber"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.CouponNumberMapper" />
+		<MAP column="ID_PRM" record="ItemDiscount" field="Quantity"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.DiscountItemQuantityMapper"/>
+		<MAP column="MO_MDFR_RT_PRC" record="ItemDiscount" field="UnitDiscountAmount"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.TransactionDiscountAmountMapper" />
+		<MAP column="ID_PRM_CMP" record="ItemDiscount" field="PromoComponent">
+            <VALUE_MAPPINGS handleNotFound="nextMapping">
+                <VALUE_MAPPING DatabaseValue="-1" RecordValue="0"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+	</TABLE>
+
+ 	<TABLE table="SHP_RDS_SLS_RTN">
+	    
+	    	<!-- Columns		to			Fields
+	    	SHP_CHG					UnitRetail/QuantitySign
+	    	MO_TX/MO_TX_INC			TaxableIndicator -->
+	   
+	    <MAP column="SHP_CHG" record="TransactionShippingItem" field="UnitRetail"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ShippingChargeMapper" />
+
+	</TABLE>
+
+	<!--  <TABLE table="SHP_RDS_SLS_RTN_TX">
+		<MAP column="ID_ATHY_TX" record="ItemGlobalTax" field="TaxAuthority"/>
+		<MAP column="PE_TX" record="ItemGlobalTax" field="TaxRate"/>
+		<MAP column="MO_TX_RTN_SLS" record="ItemGlobalTax" field="TaxAmount"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ItemShippingTaxAmountMapper"/>
+		<MAP column="MO_TX_RTN_SLS_TOT" record="TransactionShippingItem" field="TotalTaxAmount"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.ItemShippingTotalTaxMapper" />
+	</TABLE>
+
+	<TABLE table="TR_LTM_PYAN">
+		<MAP column="MO_PYM_AGT_RCV" record="TransactionPayment" field="Amount"
+			fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.TransactionPaymentMapper"/>
+	</TABLE>
+
+	<TABLE table="LE_HST_TL_TND">
+		<MAP column="CP_TND_RCN_TOT"
+		     record="TransactionHeaderTotal"
+		     field="Value"
+		     mappingStrategyOrder="UseInFieldMapper"
+		     fieldMapper="oracle.retail.stores.exportfile.rtlog.fieldmappers.TransactionHeaderTotalMapper">
+            <VALUE_MAPPINGS handleNotFound="error">
+                <VALUE_MAPPING DatabaseValue="CASH" RecordValue="CASH"/>
+                <VALUE_MAPPING DatabaseValue="CHCK" RecordValue="CHCK"/>
+                <VALUE_MAPPING DatabaseValue="TRAV" RecordValue="TRAVCHK"/>
+                <VALUE_MAPPING DatabaseValue="QPON" RecordValue="QPON"/>
+                <VALUE_MAPPING DatabaseValue="DBIT" RecordValue="DEBITCARD"/>
+                <VALUE_MAPPING DatabaseValue="MNYO" RecordValue="MNYORDER"/>
+                <VALUE_MAPPING DatabaseValue="GICT" RecordValue="GIFTCERT"/>
+                <VALUE_MAPPING DatabaseValue="GCRD" RecordValue="GIFTCARD"/>
+                <VALUE_MAPPING DatabaseValue="STCR" RecordValue="STCREDIT"/>
+                <VALUE_MAPPING DatabaseValue="MACT" RecordValue="MALLCERT"/>
+                <VALUE_MAPPING DatabaseValue="PRCH" RecordValue="PRCHORDER"/>
+                <VALUE_MAPPING DatabaseValue="VOUCH" RecordValue="PREPAID"/>
+                <VALUE_MAPPING DatabaseValue="ECHK" RecordValue="CHECK"/>
+                <VALUE_MAPPING DatabaseValue="MBCK" RecordValue="MBCHECK"/>
+                <VALUE_MAPPING DatabaseValue="Visa" RecordValue="CCARDVisa"/>
+                <VALUE_MAPPING DatabaseValue="Maestro" RecordValue="CCARDMaestro"/>
+                <VALUE_MAPPING DatabaseValue="MasterCard" RecordValue="CCARDMCard"/>
+                <VALUE_MAPPING DatabaseValue="AmEx" RecordValue="CCARDAmEx"/>
+                <VALUE_MAPPING DatabaseValue="Discover" RecordValue="CCARDDisc"/>
+                <VALUE_MAPPING DatabaseValue="Diners" RecordValue="CCARDDiner"/>
+                <VALUE_MAPPING DatabaseValue="HouseCard" RecordValue="CCARDHCard"/>
+                <VALUE_MAPPING DatabaseValue="JCB" RecordValue="CCARDJCB"/>
+                <VALUE_MAPPING DatabaseValue="CASHAC" RecordValue="CASHAC"/>
+                <VALUE_MAPPING DatabaseValue="CHCKAC" RecordValue="PCHECKAC"/>
+                <VALUE_MAPPING DatabaseValue="TRAVAC" RecordValue="TCHECKAC"/>
+                <VALUE_MAPPING DatabaseValue="STCRAC" RecordValue="STCRDTAC"/>
+                <VALUE_MAPPING DatabaseValue="GICTAC" RecordValue="GIFTCERTAC"/>
+                <VALUE_MAPPING DatabaseValue="Credit" RecordValue="CCARDS"/>
+                <VALUE_MAPPING DatabaseValue="AmEx" RecordValue="CAMEX"/>
+                <VALUE_MAPPING DatabaseValue="NSQPON" RecordValue="COUP"/>
+                <VALUE_MAPPING DatabaseValue="GVCR" RecordValue="GIFT"/>
+                <VALUE_MAPPING DatabaseValue="LVCR" RecordValue="LVOUCH"/>
+                <VALUE_MAPPING DatabaseValue="STCR" RecordValue="STRCRE"/>
+            </VALUE_MAPPINGS>
+		</MAP>
+	</TABLE> -->
+
+	<ACCESSOR record="FileHeader"        		class="oracle.retail.stores.exportfile.rtlog.accessors.AccessFileHeader"/>
+	<ACCESSOR record="TransactionHeader" 		class="oracle.retail.stores.exportfile.rtlog.accessors.AccessTransactionHeader"/>
+	<ACCESSOR record="TransactionItem"   		class="oracle.retail.stores.exportfile.rtlog.accessors.AccessTransactionItem"/>
+	<ACCESSOR record="ItemDiscount"      		class="oracle.retail.stores.exportfile.rtlog.accessors.AccessItemDiscount"/>
+	<ACCESSOR record="TransactionTender" 		class="oracle.retail.stores.exportfile.rtlog.accessors.AccessTransactionTender"/>
+	<ACCESSOR record="TransactionTax"    		class="oracle.retail.stores.exportfile.rtlog.accessors.AccessTransactionTax"/>
+	<ACCESSOR record="TransactionShippingItem"	class="oracle.retail.stores.exportfile.rtlog.accessors.AccessTransactionShippingRecord"/>
+	<ACCESSOR record="ItemRestockingFee" 		class="oracle.retail.stores.exportfile.rtlog.accessors.AccessItemRestockingFee"/>
+	<ACCESSOR record="TransactionHeaderTotal" 	class="oracle.retail.stores.exportfile.rtlog.accessors.AccessTransactionHeaderTotal"/>
+	<ACCESSOR record="OtherTransactionTender" 	class="oracle.retail.stores.exportfile.rtlog.accessors.AccessOtherTransactionTender"/>
+	<ACCESSOR record="TransactionFee"           class="oracle.retail.stores.exportfile.rtlog.accessors.AccessTransactionFee"/>
+	<ACCESSOR record="ItemGlobalTax"            class="oracle.retail.stores.exportfile.rtlog.accessors.AccessItemGlobalTax"/>
+	<ACCESSOR record="TransactionPayment"       class="oracle.retail.stores.exportfile.rtlog.accessors.AccessTransactionPayment"/>
+	<ACCESSOR record="LayawayDeletionFee"       class="oracle.retail.stores.exportfile.rtlog.accessors.AccessLayawayDeletionFee"/>
+	<ACCESSOR record="TransactionCustomer" 		class="nbty.retail.stores.exportfile.rtlog.accessors.NbtyAccessTransactionCustomer"/>
+</ENTITY_MAPPER>

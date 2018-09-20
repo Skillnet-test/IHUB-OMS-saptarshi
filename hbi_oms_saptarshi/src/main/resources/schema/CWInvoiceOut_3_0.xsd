@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Erin Butler (CommercialWare, Inc.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="Message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InvoiceHeader" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="CompanyAddress" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="company_description" type="xs:string"/>
+									<xs:attribute name="company_address1" type="xs:string"/>
+									<xs:attribute name="company_address2" type="xs:string"/>
+									<xs:attribute name="company_city" type="xs:string"/>
+									<xs:attribute name="company_state" type="xs:string"/>
+									<xs:attribute name="company_state_name" type="xs:string"/>
+									<xs:attribute name="company_zip" type="xs:string"/>
+									<xs:attribute name="company_country" type="xs:string"/>
+									<xs:attribute name="company_country_name" type="xs:string"/>
+									<xs:attribute name="company_phone" type="xs:string"/>
+									<xs:attribute name="company_fax" type="xs:string"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="OrderHeader" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="ohd_reference_order_nbr" type="xs:string"/>
+									<xs:attribute name="ohd_order_status" type="xs:string"/>
+									<xs:attribute name="ohd_nbr_of_recipients" type="xs:string"/>
+									<xs:attribute name="ohd_order_date" type="xs:string"/>
+									<xs:attribute name="ohd_enter_date" type="xs:string"/>
+									<xs:attribute name="ohd_enter_time" type="xs:string"/>
+									<xs:attribute name="ohd_batch_sequence_nbr" type="xs:string"/>
+									<xs:attribute name="ohd_user_defined_date" type="xs:string"/>
+									<xs:attribute name="ohd_billing_batch_nbr" type="xs:string"/>
+									<xs:attribute name="ohd_order_channel" type="xs:string"/>
+									<xs:attribute name="ohd_master_carton_label" type="xs:string"/>
+									<xs:attribute name="ohd_membership_id" type="xs:string"/>
+									<xs:attribute name="ohd_membership_seq_nbr" type="xs:string"/>
+									<xs:attribute name="ohd_order_batch_nbr" type="xs:string"/>
+									<xs:attribute name="ohd_order_type" type="xs:string"/>
+									<xs:attribute name="ohd_order_type_description" type="xs:string"/>
+									<xs:attribute name="ohd_salesman_nbr" type="xs:string"/>
+									<xs:attribute name="ohd_salesman_name" type="xs:string"/>
+									<xs:attribute name="ohd_invoice_source_code" type="xs:string"/>
+									<xs:attribute name="ohd_invoice_source_description" type="xs:string"/>
+									<xs:attribute name="ohd_invoice_division_code" type="xs:string"/>
+									<xs:attribute name="ohd_invoice_division_description" type="xs:string"/>
+									<xs:attribute name="ohd_invoice_entity_nbr" type="xs:string"/>
+									<xs:attribute name="ohd_invoice_entity_description" type="xs:string"/>
+									<xs:attribute name="ohd_customer_class" type="xs:string"/>
+									<xs:attribute name="ohd_customer_class_description" type="xs:string"/>
+									
+									<xs:attribute name="ohd_order_email_address" type="xs:string"/>
+									<xs:attribute name="ohd_order_entry_wrkstn" type="xs:string"/>
+									<xs:attribute name="ohd_freight_charge" type="xs:string"/>
+									<xs:attribute name="ohd_freight_override" type="xs:string"/>
+									<xs:attribute name="ohd_freight_balance" type="xs:string"/>
+									<xs:attribute name="ohd_remit_amount" type="xs:string"/>
+									<xs:attribute name="ohd_email_confirm_date" type="xs:string"/>
+									<xs:attribute name="ohd_cbt_account_nbr" type="xs:string"/>
+									<xs:attribute name="ohd_user_hold_reason" type="xs:string"/>
+									<xs:attribute name="ohd_system_hold_reason" type="xs:string"/>
+									<xs:attribute name="ohd_cst_customer_nbr" type="xs:string"/>
+									<xs:attribute name="ohd_usr_user" type="xs:string"/>
+									<xs:attribute name="ohd_entered_by_user" type="xs:string"/>
+									<xs:attribute name="ohd_ecomm_order_number" type="xs:string"/>
+									<xs:attribute name="ohd_ecomm_ip_address" type="xs:string"/>
+									<xs:attribute name="ohd_originating_store" type="xs:string"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="CustomerSoldTo" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										
+										
+									</xs:sequence>
+									<xs:attribute name="sold_to_nbr" type="xs:string"/>
+									<xs:attribute name="sold_to_prefix" type="xs:string"/>
+									<xs:attribute name="sold_to_fname" type="xs:string"/>
+									<xs:attribute name="sold_to_initial" type="xs:string"/>
+									<xs:attribute name="sold_to_lname" type="xs:string"/>
+									<xs:attribute name="sold_to_suffix" type="xs:string"/>
+									<xs:attribute name="sold_to_company" type="xs:string"/>
+									<xs:attribute name="sold_to_apt" type="xs:string"/>
+									<xs:attribute name="sold_to_address1" type="xs:string"/>
+									<xs:attribute name="sold_to_address2" type="xs:string"/>
+									<xs:attribute name="sold_to_address3" type="xs:string"/>
+									<xs:attribute name="sold_to_address4" type="xs:string"/>
+									<xs:attribute name="sold_to_city" type="xs:string"/>
+									<xs:attribute name="sold_to_country" type="xs:string"/>
+									<xs:attribute name="sold_to_country_name" type="xs:string"/>
+									<xs:attribute name="sold_to_state" type="xs:string"/>
+									<xs:attribute name="sold_to_state_name" type="xs:string"/>
+									<xs:attribute name="sold_to_zip" type="xs:string"/>
+									<xs:attribute name="sold_to_delivery_code" type="xs:string"/>
+									<xs:attribute name="sold_to_po_box" type="xs:string"/>
+									<xs:attribute name="sold_to_email_address" type="xs:string"/>
+									<xs:attribute name="sold_to_day_phone" type="xs:string"/>
+									<xs:attribute name="sold_to_day_ext" type="xs:string"/>
+									<xs:attribute name="sold_to_eve_phone" type="xs:string"/>
+									<xs:attribute name="sold_to_eve_ext" type="xs:string"/>
+									<xs:attribute name="sold_to_fax_phone" type="xs:string"/>
+									<xs:attribute name="sold_to_fax_ext" type="xs:string"/>
+									<xs:attribute name="sold_to_job_title" type="xs:string"/>
+									<xs:attribute name="sold_to_rent_name" type="xs:string"/>
+									<xs:attribute name="sold_to_mail_name" type="xs:string"/>
+									<xs:attribute name="sold_to_rent_email" type="xs:string"/>
+									<xs:attribute name="sold_to_email_status" type="xs:string"/>
+									<xs:attribute name="sold_to_mail_code" type="xs:string"/>
+									<xs:attribute name="sold_to_mail_code_desc" type="xs:string"/>
+									<xs:attribute name="sold_to_call_code" type="xs:string"/>
+									<xs:attribute name="sold_to_call_code_desc" type="xs:string"/>
+									<xs:attribute name="sold_to_tax_status" type="xs:string"/>
+									<xs:attribute name="sold_to_associate" type="xs:string"/>
+									<xs:attribute name="sold_to_type" type="xs:string"/>
+									<xs:attribute name="sold_to_inactive" type="xs:string"/>
+									<xs:attribute name="sold_to_commercial" type="xs:string"/>
+									<xs:attribute name="sold_to_alternate_id" type="xs:string"/>
+									<xs:attribute name="sold_to_cross_ref_nbr" type="xs:string"/>
+									<xs:attribute name="sold_to_currency_code" type="xs:string"/>
+									<xs:attribute name="sold_to_currency_desc" type="xs:string"/>
+									<xs:attribute name="sold_to_language_code" type="xs:string"/>
+									<xs:attribute name="sold_to_language_desc" type="xs:string"/>
+									<xs:attribute name="sold_to_cust_company" type="xs:string"/>
+									<xs:attribute name="sold_to_cust_company_name" type="xs:string"/>
+									<xs:attribute name="sold_to_warehouse" type="xs:string"/>
+									<xs:attribute name="sold_to_warehouse_name" type="xs:string"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="CustomerBillTo" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="bill_to_nbr" type="xs:string"/>
+									<xs:attribute name="bill_to_prefix" type="xs:string"/>
+									<xs:attribute name="bill_to_fname" type="xs:string"/>
+									<xs:attribute name="bill_to_initial" type="xs:string"/>
+									<xs:attribute name="bill_to_lname" type="xs:string"/>
+									<xs:attribute name="bill_to_suffix" type="xs:string"/>
+									<xs:attribute name="bill_to_company" type="xs:string"/>
+									<xs:attribute name="bill_to_apt" type="xs:string"/>
+									<xs:attribute name="bill_to_address1" type="xs:string"/>
+									<xs:attribute name="bill_to_address2" type="xs:string"/>
+									<xs:attribute name="bill_to_address3" type="xs:string"/>
+									<xs:attribute name="bill_to_address4" type="xs:string"/>
+									<xs:attribute name="bill_to_city" type="xs:string"/>
+									<xs:attribute name="bill_to_country" type="xs:string"/>
+									<xs:attribute name="bill_to_country_name" type="xs:string"/>
+									<xs:attribute name="bill_to_state" type="xs:string"/>
+									<xs:attribute name="bill_to_state_name" type="xs:string"/>
+									<xs:attribute name="bill_to_zip" type="xs:string"/>
+									<xs:attribute name="bill_to_deliver_code" type="xs:string"/>
+									<xs:attribute name="bill_to_po_box" type="xs:string"/>
+									<xs:attribute name="bill_to_email_address" type="xs:string"/>
+									<xs:attribute name="bill_to_day_phone" type="xs:string"/>
+									<xs:attribute name="bill_to_day_ext" type="xs:string"/>
+									<xs:attribute name="bill_to_eve_phone" type="xs:string"/>
+									<xs:attribute name="bill_to_eve_ext" type="xs:string"/>
+									<xs:attribute name="bill_to_fax_phone" type="xs:string"/>
+									<xs:attribute name="bill_to_fax_ext" type="xs:string"/>
+									<xs:attribute name="bill_to_print_statement" type="xs:string"/>
+									<xs:attribute name="bill_to_email_status" type="xs:string"/>
+									<xs:attribute name="bill_to_currency_code" type="xs:string"/>
+									<xs:attribute name="bill_to_currency_desc" type="xs:string"/>
+									<xs:attribute name="bill_to_language_code" type="xs:string"/>
+									<xs:attribute name="bill_to_language_desc" type="xs:string"/>
+									<xs:attribute name="bill_to_terms_code" type="xs:string"/>
+									<xs:attribute name="bill_to_terms_desc" type="xs:string"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="InvoicePaymentMethods" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence minOccurs="0" maxOccurs="unbounded">
+										<xs:element name="InvoicePaymentMethod">
+											<xs:complexType>
+												<xs:attribute name="ipm_seq_nbr" type="xs:string"/>
+												<xs:attribute name="ipm_pay_type" type="xs:string"/>
+												<xs:attribute name="ipm_pay_type_desc" type="xs:string"/>
+												<xs:attribute name="ipm_pay_category" type="xs:string"/>
+												<xs:attribute name="ipm_merchandise_amt" type="xs:string"/>
+												<xs:attribute name="ipm_merchandise_balance_amt" type="xs:string"/>
+												<xs:attribute name="ipm_freight_amt" type="xs:string"/>
+												<xs:attribute name="ipm_freight_balance_amt" type="xs:string"/>
+												<xs:attribute name="ipm_addl_freight_amt" type="xs:string"/>
+												<xs:attribute name="ipm_addl_freight_balance_amt" type="xs:string"/>
+												<xs:attribute name="ipm_addl_charge_amt" type="xs:string"/>
+												<xs:attribute name="ipm_addl_charge_balance_amt" type="xs:string"/>
+												<xs:attribute name="ipm_hand_charge_amt" type="xs:string"/>
+												<xs:attribute name="ipm_hand_charge_balance_amt" type="xs:string"/>
+												<xs:attribute name="ipm_tax_amt" type="xs:string"/>
+												<xs:attribute name="ipm_tax_balance_amt" type="xs:string"/>
+												<xs:attribute name="ipm_gst_amt" type="xs:string"/>
+												<xs:attribute name="ipm_gst_balance_amt" type="xs:string"/>
+												<xs:attribute name="ipm_pst_amt" type="xs:string"/>
+												<xs:attribute name="ipm_pst_balance_amt" type="xs:string"/>
+												<xs:attribute name="ipm_ord_lvl_frt_amt" type="xs:string"/>
+												<xs:attribute name="ipm_ord_lvl_frt_balance_amt" type="xs:string"/>
+												<xs:attribute name="ipm_ord_lvl_frt_tax_amt" type="xs:string"/>
+												<xs:attribute name="ipm_ord_lvl_frt_tax_bal_amt" type="xs:string"/>
+												<xs:attribute name="ipm_deposit_created_date" type="xs:string"/>
+												<xs:attribute name="ipm_auth_number" type="xs:string"/>
+												<xs:attribute name="ipm_auth_date" type="xs:string"/>
+												<xs:attribute name="ipm_cc_credit_status" type="xs:string"/>
+												<xs:attribute name="ipm_payment_option_type" type="xs:string"/>
+												<xs:attribute name="ipm_invoice_date" type="xs:string"/>
+												<xs:attribute name="ipm_nbr_of_installments" type="xs:string"/>
+												<xs:attribute name="ipm_nbr_installments_remain" type="xs:string"/>
+												<xs:attribute name="ipm_installment_interval" type="xs:string"/>
+												<xs:attribute name="ipm_fix_install_bill_day" type="xs:string"/>
+												<xs:attribute name="ipm_deposit_release_date" type="xs:string"/>
+												<xs:attribute name="ipm_credit_card_nbr" type="xs:string"/>
+												<xs:attribute name="ipm_cc_expiration_date" type="xs:string"/>
+												<xs:attribute name="ipm_deposit_amount" type="xs:string"/>
+												<xs:attribute name="ipm_total_deposit_to_date" type="xs:string"/>
+												<xs:attribute name="ipm_prepaid_amount" type="xs:string"/>
+												<xs:attribute name="ipm_suppress_deposit" type="xs:string"/>
+												<xs:attribute name="ipm_card_start_date" type="xs:string"/>
+												<xs:attribute name="ipm_deposit_adjust_amount" type="xs:string"/>
+												<xs:attribute name="ipm_prepaid_pay_method" type="xs:string"/>
+												<xs:attribute name="ipm_fpo_payment_code" type="xs:string"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="InvoiceShipTos" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence minOccurs="0" maxOccurs="unbounded">
+										<xs:element name="InvoiceShipTo">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="InvoiceBillingAddress" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="iba_ship_to_nbr" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_prefix" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_fname" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_initial" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_lname" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_suffix" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_company" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_apt" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_address1" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_address2" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_address3" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_address4" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_city" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_country" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_country_name" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_state" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_state_name" type="xs:string" use="optional"/>
+															<xs:attribute name="iba_zip" type="xs:string" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="InvoiceShippingAddress" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="isa_ship_to_nbr" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_prefix" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_fname" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_initial" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_lname" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_suffix" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_company" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_apt" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_address1" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_address2" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_address3" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_address4" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_city" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_country" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_country_name" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_state" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_state_name" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_zip" type="xs:string" use="optional"/>
+															<xs:attribute name="isa_deliver_code" type="xs:string"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="OrderShipTo" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="OrderMessages" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																			<xs:element name="OrderMessage">
+																				<xs:complexType>
+																					<xs:attribute name="order_msg_seq_nbr" type="xs:string"/>
+																					<xs:attribute name="order_message_text" type="xs:string"/>
+																					<xs:attribute name="order_message_print" type="xs:string"/>
+																					<xs:attribute name="order_message_date" type="xs:string"/>
+																					<xs:attribute name="order_message_user" type="xs:string"/>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="Certficates" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																			<xs:element name="Certificate">
+																				<xs:complexType>
+																					<xs:attribute name="certificate_number" type="xs:string"/>
+																					<xs:attribute name="certificate_amount" type="xs:string"/>
+																					<xs:attribute name="transaction_id" type="xs:string"/>
+																					<xs:attribute name="redeemed_amount" type="xs:string"/>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+																<xs:element name="OrderAdditionalCharges" minOccurs="0">
+																	<xs:complexType>
+																		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																			<xs:element name="OrderAdditionalCharge">
+																				<xs:complexType>
+																					<xs:attribute name="oac_addl_charge_inv_date" type="xs:string"/>
+																					<xs:attribute name="oac_addl_charge_amt" type="xs:string"/>
+																					<xs:attribute name="oac_addl_charge_code" type="xs:string"/>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+															<xs:attribute name="ost_ship_via_code" type="xs:string"/>
+															<xs:attribute name="ost_ship_via_description" type="xs:string"/>
+															<xs:attribute name="ost_status" type="xs:string"/>
+															<xs:attribute name="ost_tax_code" type="xs:string"/>
+															<xs:attribute name="ost_contact_name" type="xs:string"/>
+															<xs:attribute name="ost_fedex_nbr" type="xs:string"/>
+															<xs:attribute name="ost_gift_flag" type="xs:string"/>
+															<xs:attribute name="ost_resale_exempt_nbr" type="xs:string"/>
+															<xs:attribute name="ost_line_of_business" type="xs:string"/>
+															<xs:attribute name="ost_line_of_business_desc" type="xs:string"/>
+															<xs:attribute name="ost_geographic_zone" type="xs:string"/>
+															<xs:attribute name="ost_geographic_zone_desc" type="xs:string"/>
+															<xs:attribute name="ost_nbr_of_shipments" type="xs:string"/>
+															<xs:attribute name="ost_nbr_of_picks_out" type="xs:string"/>
+															<xs:attribute name="ost_additional_charge" type="xs:string"/>
+															<xs:attribute name="ost_additional_charge_balance" type="xs:string"/>
+															<xs:attribute name="ost_arrival_date" type="xs:string"/>
+															<xs:attribute name="ost_cancel_bo" type="xs:string"/>
+															<xs:attribute name="ost_cancel_date" type="xs:string"/>
+															<xs:attribute name="ost_estimated_freight" type="xs:string"/>
+															<xs:attribute name="ost_freight" type="xs:string"/>
+															<xs:attribute name="ost_freight_override" type="xs:string"/>
+															<xs:attribute name="ost_freight_balance" type="xs:string"/>
+															<xs:attribute name="ost_handling" type="xs:string"/>
+															<xs:attribute name="ost_handling_balance" type="xs:string"/>
+															<xs:attribute name="ost_last_pick_print_date" type="xs:string"/>
+															<xs:attribute name="ost_last_reservation_date" type="xs:string"/>
+															<xs:attribute name="ost_merchandise" type="xs:string"/>
+															<xs:attribute name="ost_merchandise_balance" type="xs:string"/>
+															<xs:attribute name="ost_ship_complete" type="xs:string"/>
+															<xs:attribute name="ost_tax" type="xs:string"/>
+															<xs:attribute name="ost_tax_balance" type="xs:string"/>
+															<xs:attribute name="ost_gst" type="xs:string"/>
+															<xs:attribute name="ost_gst_balance" type="xs:string"/>
+															<xs:attribute name="ost_pst" type="xs:string"/>
+															<xs:attribute name="ost_pst_balance" type="xs:string"/>
+															<xs:attribute name="ost_priority" type="xs:string"/>
+															<xs:attribute name="ost_purchase_order_nbr" type="xs:string"/>
+															<xs:attribute name="ost_number_of_lines" type="xs:string"/>
+															<xs:attribute name="ost_additional_freight" type="xs:string"/>
+															<xs:attribute name="ost_additional_freight_balance" type="xs:string"/>
+															<xs:attribute name="ost_discount_pct" type="xs:string"/>
+															<xs:attribute name="ost_calculate_freight" type="xs:string"/>
+															<xs:attribute name="ost_order_combination_type" type="xs:string"/>
+															<xs:attribute name="ost_cst_customer_nbr" type="xs:string"/>
+															<xs:attribute name="ost_csh_ship_to_nbr" type="xs:string"/>
+															<xs:attribute name="ost_ohr_hold_reason" type="xs:string"/>
+															<xs:attribute name="ost_whs_warehouse" type="xs:string"/>
+															<xs:attribute name="ost_warehouse_name" type="xs:string"/>
+															<xs:attribute name="ost_broker_delivery_type" type="xs:string"/>
+															<xs:attribute name="ost_destination_store" type="xs:string"/>
+															<xs:attribute name="ost_originating_store" type="xs:string"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="CustomerShipTo" minOccurs="0">
+														<xs:complexType>
+															<xs:attribute name="ship_to_customer_nbr" type="xs:string"/>
+															<xs:attribute name="permanent_ship_to_nbr" type="xs:string"/>
+															<xs:attribute name="ship_to_prefix" type="xs:string"/>
+															<xs:attribute name="ship_to_fname" type="xs:string"/>
+															<xs:attribute name="ship_to_initial" type="xs:string"/>
+															<xs:attribute name="ship_to_lname" type="xs:string"/>
+															<xs:attribute name="ship_to_suffix" type="xs:string"/>
+															<xs:attribute name="ship_to_company" type="xs:string"/>
+															<xs:attribute name="ship_to_apt" type="xs:string"/>
+															<xs:attribute name="ship_to_address1" type="xs:string"/>
+															<xs:attribute name="ship_to_address2" type="xs:string"/>
+															<xs:attribute name="ship_to_address3" type="xs:string"/>
+															<xs:attribute name="ship_to_address4" type="xs:string"/>
+															<xs:attribute name="ship_to_city" type="xs:string"/>
+															<xs:attribute name="ship_to_country" type="xs:string"/>
+															<xs:attribute name="ship_to_country_name" type="xs:string"/>
+															<xs:attribute name="ship_to_state" type="xs:string"/>
+															<xs:attribute name="ship_to_state_name" type="xs:string"/>
+															<xs:attribute name="ship_to_zip" type="xs:string"/>
+															<xs:attribute name="ship_to_delivery_code" type="xs:string"/>
+															<xs:attribute name="ship_to_po_box" type="xs:string"/>
+															<xs:attribute name="ship_to_email_address" type="xs:string"/>
+															<xs:attribute name="ship_to_day_phone" type="xs:string"/>
+															<xs:attribute name="ship_to_day_ext" type="xs:string"/>
+															<xs:attribute name="ship_to_eve_phone" type="xs:string"/>
+															<xs:attribute name="ship_to_eve_ext" type="xs:string"/>
+															<xs:attribute name="ship_to_fax_phone" type="xs:string"/>
+															<xs:attribute name="ship_to_fax_ext" type="xs:string"/>
+															<xs:attribute name="ship_to_rent_name" type="xs:string"/>
+															<xs:attribute name="ship_to_mail_code" type="xs:string"/>
+															<xs:attribute name="ship_to_mail_code_desc" type="xs:string"/>
+															<xs:attribute name="ship_to_match_code" type="xs:string"/>
+															<xs:attribute name="ship_to_record_extended" type="xs:string"/>
+															<xs:attribute name="ship_to_postal_code_scan" type="xs:string"/>
+															<xs:attribute name="ship_to_call_code" type="xs:string"/>
+															<xs:attribute name="ship_to_call_code_desc" type="xs:string"/>
+															<xs:attribute name="ship_to_language_code" type="xs:string"/>
+															<xs:attribute name="ship_to_language_desc" type="xs:string"/>
+															<xs:attribute name="ship_to_job_title" type="xs:string"/>
+															<xs:attribute name="ship_to_mail_name" type="xs:string"/>
+															<xs:attribute name="ship_to_email_status" type="xs:string"/>
+															<xs:attribute name="ship_to_rent_email" type="xs:string"/>
+															<xs:attribute name="ship_to_tax_status" type="xs:string"/>
+															<xs:attribute name="ship_to_associate" type="xs:string"/>
+															<xs:attribute name="ship_to_type" type="xs:string"/>
+															<xs:attribute name="ship_to_inactive" type="xs:string"/>
+															<xs:attribute name="ship_to_commercial" type="xs:string"/>
+															<xs:attribute name="ship_to_alternate_id" type="xs:string"/>
+															<xs:attribute name="ship_to_cross_ref_nbr" type="xs:string"/>
+															<xs:attribute name="ship_to_currency_code" type="xs:string"/>
+															<xs:attribute name="ship_to_currency_desc" type="xs:string"/>
+															<xs:attribute name="ship_to_cust_company" type="xs:string"/>
+															<xs:attribute name="ship_to_cust_company_name" type="xs:string"/>
+															<xs:attribute name="ship_to_warehouse" type="xs:string"/>
+															<xs:attribute name="ship_to_warehouse_name" type="xs:string"/>
+															<xs:attribute name="order_ship_to_prefix" type="xs:string"/>
+															<xs:attribute name="order_ship_to_fname" type="xs:string"/>
+															<xs:attribute name="order_ship_to_initial" type="xs:string"/>
+															<xs:attribute name="order_ship_to_lname" type="xs:string"/>
+															<xs:attribute name="order_ship_to_suffix" type="xs:string"/>
+															<xs:attribute name="order_ship_to_company" type="xs:string"/>
+															<xs:attribute name="order_ship_to_apt" type="xs:string"/>
+															<xs:attribute name="order_ship_to_address1" type="xs:string"/>
+															<xs:attribute name="order_ship_to_address2" type="xs:string"/>
+															<xs:attribute name="order_ship_to_address3" type="xs:string"/>
+															<xs:attribute name="order_ship_to_address4" type="xs:string"/>
+															<xs:attribute name="order_ship_to_city" type="xs:string"/>
+															<xs:attribute name="order_ship_to_country" type="xs:string"/>
+															<xs:attribute name="order_ship_to_country_name" type="xs:string"/>
+															<xs:attribute name="order_ship_to_state" type="xs:string"/>
+															<xs:attribute name="order_ship_to_state_name" type="xs:string"/>
+															<xs:attribute name="order_ship_to_zip" type="xs:string"/>
+															<xs:attribute name="order_ship_to_delivery_code" type="xs:string"/>
+															<xs:attribute name="order_ship_to_po_box" type="xs:string"/>
+															<xs:attribute name="order_ship_to_email_address" type="xs:string"/>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="InvoiceDetails" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																<xs:element name="InvoiceDetail">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="OrderDetail" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:element name="OrderLineMessages" minOccurs="0">
+																							<xs:complexType>
+																								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																									<xs:element name="OrderLineMessage">
+																										<xs:complexType>
+																											<xs:attribute name="line_msg_seq_nbr" type="xs:string"/>
+																											<xs:attribute name="line_message_text" type="xs:string"/>
+																											<xs:attribute name="line_message_print" type="xs:string"/>
+																											<xs:attribute name="line_message_date" type="xs:string"/>
+																											<xs:attribute name="line_message_user" type="xs:string"/>
+																										</xs:complexType>
+																									</xs:element>
+																								</xs:sequence>
+																							</xs:complexType>
+																						</xs:element>
+																						<xs:element name="OrderDetailCoupons" minOccurs="0">
+																							<xs:complexType>
+																								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																									<xs:element name="OrderDetailCoupon">
+																										<xs:complexType>
+																											<xs:attribute name="odc_coupon_type" type="xs:string"/>
+																											<xs:attribute name="odc_pre_discount_price" type="xs:string"/>
+																											<xs:attribute name="odc_post_discount_price" type="xs:string"/>
+																											<xs:attribute name="odc_coupon_code" type="xs:string"/>
+																										</xs:complexType>
+																									</xs:element>
+																								</xs:sequence>
+																							</xs:complexType>
+																						</xs:element>
+																						<xs:element name="StoredValueCards" minOccurs="0">
+																							<xs:complexType>
+																								<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																									<xs:element name="StoredValueCard">
+																										<xs:complexType>
+																											<xs:attribute name="svc_card_nbr" type="xs:string"/>
+																										</xs:complexType>
+																									</xs:element>
+																								</xs:sequence>
+																							</xs:complexType>
+																						</xs:element>
+																					</xs:sequence>
+																					<xs:attribute name="odt_ordered_qty" type="xs:string"/>
+																					<xs:attribute name="odt_reserved_qty" type="xs:string"/>
+																					<xs:attribute name="odt_printed_qty" type="xs:string"/>
+																					<xs:attribute name="odt_cancelled_qty" type="xs:string"/>
+																					<xs:attribute name="odt_sold_out_qty" type="xs:string"/>
+																					<xs:attribute name="odt_shipped_qty" type="xs:string"/>
+																					<xs:attribute name="odt_returned_qty" type="xs:string"/>
+																					<xs:attribute name="odt_credited_qty" type="xs:string"/>
+																					<xs:attribute name="odt_line_status" type="xs:string"/>
+																					<xs:attribute name="odt_drop_ship" type="xs:string"/>
+																					<xs:attribute name="odt_item" type="xs:string"/>
+																					<xs:attribute name="odt_sku" type="xs:string"/>
+																					<xs:attribute name="odt_short_sku" type="xs:string"/>
+																					<xs:attribute name="odt_retail_ref_nbr" type="xs:string"/>
+																					<xs:attribute name="odt_offer" type="xs:string"/>
+																					<xs:attribute name="odt_alias" type="xs:string"/>
+																					<xs:attribute name="odt_page_letter" type="xs:string"/>
+																					<xs:attribute name="odt_page_nbr" type="xs:string"/>
+																					<xs:attribute name="odt_sub_set" type="xs:string"/>
+																					<xs:attribute name="odt_sub_set_seq_nbr" type="xs:string"/>
+																					<xs:attribute name="odt_warranty_item" type="xs:string"/>
+																					<xs:attribute name="odt_source_code" type="xs:string"/>
+																					<xs:attribute name="odt_source_description" type="xs:string"/>
+																					<xs:attribute name="odt_division_code" type="xs:string"/>
+																					<xs:attribute name="odt_division_description" type="xs:string"/>
+																					<xs:attribute name="odt_entity_nbr" type="xs:string"/>
+																					<xs:attribute name="odt_entity_description" type="xs:string"/>
+																					<xs:attribute name="odt_discount_applied" type="xs:string"/>
+																					<xs:attribute name="odt_no_charge" type="xs:string"/>
+																					<xs:attribute name="odt_second_choice_status" type="xs:string"/>
+																					<xs:attribute name="odt_affect_inventory" type="xs:string"/>
+																					<xs:attribute name="odt_arrival_date" type="xs:string"/>
+																					<xs:attribute name="odt_bo_level" type="xs:string"/>
+																					<xs:attribute name="odt_cancel_date" type="xs:string"/>
+																					<xs:attribute name="odt_coordinate_group" type="xs:string"/>
+																					<xs:attribute name="odt_date_printed" type="xs:string"/>
+																					<xs:attribute name="odt_date_reserved" type="xs:string"/>
+																					<xs:attribute name="odt_discount" type="xs:string"/>
+																					<xs:attribute name="odt_expected_ship_date" type="xs:string"/>
+																					<xs:attribute name="odt_freight_charge" type="xs:string"/>
+																					<xs:attribute name="odt_future_order" type="xs:string"/>
+																					<xs:attribute name="odt_next_bo_card_date" type="xs:string"/>
+																					<xs:attribute name="odt_original_price" type="xs:string"/>
+																					<xs:attribute name="odt_price" type="xs:string"/>
+																					<xs:attribute name="odt_bypass_reservation" type="xs:string"/>
+																					<xs:attribute name="odt_special_handling_dollars" type="xs:string"/>
+																					<xs:attribute name="odt_tax" type="xs:string"/>
+																					<xs:attribute name="odt_gst" type="xs:string"/>
+																					<xs:attribute name="odt_pst" type="xs:string"/>
+																					<xs:attribute name="odt_time_reserved" type="xs:string"/>
+																					<xs:attribute name="odt_units_confirmed" type="xs:string"/>
+																					<xs:attribute name="odt_upsell_cross_sell" type="xs:string"/>
+																					<xs:attribute name="odt_gift_wrap" type="xs:string"/>
+																					<xs:attribute name="odt_cost_override" type="xs:string"/>
+																					<xs:attribute name="odt_entered_date" type="xs:string"/>
+																					<xs:attribute name="odt_entered_time" type="xs:string"/>
+																					<xs:attribute name="odt_priority" type="xs:string"/>
+																					<xs:attribute name="odt_backorder_reason" type="xs:string"/>
+																					<xs:attribute name="odt_freight_override" type="xs:string"/>
+																					<xs:attribute name="odt_freight_additional" type="xs:string"/>
+																					<xs:attribute name="odt_offer_price" type="xs:string"/>
+																					<xs:attribute name="odt_price_method" type="xs:string"/>
+																					<xs:attribute name="odt_allow_repricing" type="xs:string"/>
+																					<xs:attribute name="odt_promotion_used" type="xs:string"/>
+																					<xs:attribute name="odt_freight_unit_charge" type="xs:string"/>
+																					<xs:attribute name="odt_set_main_item" type="xs:string"/>
+																					<xs:attribute name="odt_set_seq_nbr" type="xs:string"/>
+																					<xs:attribute name="odt_coupon" type="xs:string"/>
+																					<xs:attribute name="odt_coupon_dollar_override" type="xs:string"/>
+																					<xs:attribute name="odt_ft_purchase_date" type="xs:string"/>
+																					<xs:attribute name="odt_ft_serial_nbr" type="xs:string"/>
+																					<xs:attribute name="odt_pre_discount" type="xs:string"/>
+																					<xs:attribute name="odt_duty" type="xs:string"/>
+																					<xs:attribute name="odt_upsell_type" type="xs:string"/>
+																					<xs:attribute name="odt_need_by_date" type="xs:string"/>
+																					<xs:attribute name="odt_pickup_type" type="xs:string"/>
+																					<xs:attribute name="odt_tax_override" type="xs:string"/>
+																					<xs:attribute name="odt_sh_exclude_tax" type="xs:string"/>
+																					<xs:attribute name="odt_pickup_location_id" type="xs:string"/>
+																					<xs:attribute name="odt_location_system_id" type="xs:string"/>
+																					<xs:attribute name="odt_additional_charge_code" type="xs:string"/>
+																					<xs:attribute name="odt_whs_warehouse" type="xs:string"/>
+																					<xs:attribute name="odt_whs_warehouse_name" type="xs:string"/>
+																					<xs:attribute name="odt_cancel_reason_code" type="xs:string"/>
+																					<xs:attribute name="odt_via_ship_via_code" type="xs:string"/>
+																					<xs:attribute name="odt_ship_via_description" type="xs:string"/>
+																					<xs:attribute name="odt_second_choice_sku_item" type="xs:string"/>
+																					<xs:attribute name="odt_second_choice_sku_sku" type="xs:string"/>
+																					<xs:attribute name="odt_price_override_code" type="xs:string"/>
+																					<xs:attribute name="odt_backorder_warehouse" type="xs:string"/>
+																					<xs:attribute name="odt_backorder_warehouse_name" type="xs:string"/>
+																					<xs:attribute name="odt_aoc_addon_code" type="xs:string"/>
+																					<xs:attribute name="odt_item_description" type="xs:string"/>
+																					<xs:attribute name="odt_sku_description" type="xs:string"/>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="UPCs" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																						<xs:element name="UPC">
+																							<xs:complexType>
+																								<xs:attribute name="upc_type" type="xs:NMTOKEN"/>
+																								<xs:attribute name="upc_nbr" type="xs:NMTOKEN"/>
+																								<xs:attribute name="upc_vendor_nbr" type="xs:string"/>
+																							</xs:complexType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="InvoiceDetailPayMethods" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																						<xs:element name="InvoiceDetailPayMethod">
+																							<xs:complexType>
+																								<xs:attribute name="idp_opm_seq_nbr" type="xs:string"/>
+																								<xs:attribute name="idp_merchandise_amt" type="xs:string"/>
+																								<xs:attribute name="idp_merchandise_balance_amt" type="xs:string"/>
+																								<xs:attribute name="idp_freight_amt" type="xs:string"/>
+																								<xs:attribute name="idp_freight_balance_amt" type="xs:string"/>
+																								<xs:attribute name="idp_hand_charge_amt" type="xs:string"/>
+																								<xs:attribute name="idp_hand_charge_balance_amt" type="xs:string"/>
+																								<xs:attribute name="idp_tax_amt" type="xs:string"/>
+																								<xs:attribute name="idp_tax_balance_amt" type="xs:string"/>
+																								<xs:attribute name="idp_gst_amt" type="xs:string"/>
+																								<xs:attribute name="idp_gst_balance_amt" type="xs:string"/>
+																								<xs:attribute name="idp_pst_amt" type="xs:string"/>
+																								<xs:attribute name="idp_pst_balance_amt" type="xs:string"/>
+																							</xs:complexType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="InvoiceDetailCharges" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																						<xs:element name="InvoiceDetailCharge">
+																							<xs:complexType>
+																								<xs:attribute name="idc_charge_type" type="xs:string"/>
+																								<xs:attribute name="idc_charge_amt" type="xs:string"/>
+																								<xs:attribute name="idc_unit_amt" type="xs:string"/>
+																								<xs:attribute name="idc_duty_pct" type="xs:string"/>
+																							</xs:complexType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="InvoiceDetailCosts" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																						<xs:element name="InvoiceDetailCost">
+																							<xs:complexType>
+																								<xs:attribute name="ivc_fifo_seq_nbr" type="xs:string"/>
+																								<xs:attribute name="ivc_fifo_date" type="xs:string"/>
+																								<xs:attribute name="ivc_fifo_cost" type="xs:string"/>
+																								<xs:attribute name="ivc_quantity" type="xs:string"/>
+																								<xs:attribute name="ivc_unit_balance" type="xs:string"/>
+																							</xs:complexType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																		<xs:attribute name="idt_seq_nbr" type="xs:string"/>
+																		<xs:attribute name="idt_line_nbr" type="xs:string"/>
+																		<xs:attribute name="idt_control_nbr" type="xs:string"/>
+																		<xs:attribute name="idt_ship_date" type="xs:string"/>
+																		<xs:attribute name="idt_return_date" type="xs:string"/>
+																		<xs:attribute name="idt_shipped_qty" type="xs:string"/>
+																		<xs:attribute name="idt_return_qty" type="xs:string"/>
+																		<xs:attribute name="idt_credited_qty" type="xs:string"/>
+																		<xs:attribute name="idt_actual_price" type="xs:string"/>
+																		<xs:attribute name="idt_discount_amt" type="xs:string"/>
+																		<xs:attribute name="idt_freight_amt" type="xs:string"/>
+																		<xs:attribute name="idt_tax_amt" type="xs:string"/>
+																		<xs:attribute name="idt_gst_amt" type="xs:string"/>
+																		<xs:attribute name="idt_pst_amt" type="xs:string"/>
+																		<xs:attribute name="idt_handling_amt" type="xs:string"/>
+																		<xs:attribute name="idt_cost_amt" type="xs:string"/>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="ins_ship_to_nbr" type="xs:string"/>
+												<xs:attribute name="ins_invoice_date" type="xs:string"/>
+												<xs:attribute name="ins_merchandise_amt" type="xs:string"/>
+												<xs:attribute name="ins_freight_amt" type="xs:string"/>
+												<xs:attribute name="ins_addl_freight_amt" type="xs:string"/>
+												<xs:attribute name="ins_addl_charge_amt" type="xs:string"/>
+												<xs:attribute name="ins_hand_charge_amt" type="xs:string"/>
+												<xs:attribute name="ins_tax_amt" type="xs:string"/>
+												<xs:attribute name="ins_gst_amt" type="xs:string"/>
+												<xs:attribute name="ins_pst_amt" type="xs:string"/>
+												<xs:attribute name="ins_cost_amt" type="xs:string"/>
+												<xs:attribute name="ins_hidden_frt_amt" type="xs:string"/>
+												<xs:attribute name="ins_discount_amt" type="xs:string"/>
+												<xs:attribute name="ins_ocr_b_number" type="xs:string"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="ihd_transaction_type" type="xs:string"/>
+						<xs:attribute name="ihd_company" type="xs:string"/>
+						<xs:attribute name="ihd_order_nbr" type="xs:string"/>
+						<xs:attribute name="ihd_invoice_nbr" type="xs:string"/>
+						<xs:attribute name="ihd_invoice_type" type="xs:string"/>
+						<xs:attribute name="ihd_sj_print_date" type="xs:string"/>
+						<xs:attribute name="ihd_invoice_print_date" type="xs:string"/>
+						<xs:attribute name="ihd_invoice_currency_code" type="xs:string"/>
+						<xs:attribute name="ihd_invoice_currency_desc" type="xs:string"/>
+						<xs:attribute name="ihd_invoice_currency_rate" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="source" type="xs:string"/>
+			<xs:attribute name="target" type="xs:string"/>
+			<xs:attribute name="type" type="xs:string"/>
+			<xs:attribute name="date_created" type="xs:string"/>
+			<xs:attribute name="time_created" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

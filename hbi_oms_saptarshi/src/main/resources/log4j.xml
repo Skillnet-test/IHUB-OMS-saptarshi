@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
+
+
+	<!-- ================================= -->
+	<!-- Preserve messages in a local file -->
+	<!-- ================================= -->
+	<appender name="LF5Appender" class="org.apache.log4j.lf5.LF5Appender">
+		<param name="MaxNumberOfRecords" value="1000"/>
+	</appender>
+	<!-- ============================== -->
+	<!-- Append messages to the console -->
+	<!-- ============================== -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out"/>
+		<param name="Threshold" value="ERROR"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- The default pattern: Date Priority [Category] Message\n -->
+			<param name="ConversionPattern" value="[(%t)%l] %m%n%n"/>
+		</layout>
+	</appender>
+
+
+	<appender name="OMSINTGLOGFILE" class="com.skillnet.log4j.SkillnetRollingFileAppender">
+		<param name="File" value="./OMSLogs/omsintg.log"/>
+		<param name="Append" value="true"/>
+		<param name="maxFileSize" value="20480KB"/>
+		<param name="maxBackupIndex" value="40"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p %d %-5r  (%t:%c):%n      [%l] %n      %m%n%n"/>
+		</layout>
+	</appender>
+
+
+
+	<logger name="com.oms">
+		<level value="info"/>
+		<appender-ref ref="OMSINTGLOGFILE"/>
+	</logger>
+	
+	<category name="oracle.retail.store">
+		<priority value="INFO"/>
+		<appender-ref ref="OMSINTGLOGFILE"/>
+	</category>
+
+
+	<root>
+		<!-- appender-ref ref="CHAINSAW"/ -->
+		<appender-ref ref="OMSINTGLOGFILE"/>
+	</root>
+</log4j:configuration>

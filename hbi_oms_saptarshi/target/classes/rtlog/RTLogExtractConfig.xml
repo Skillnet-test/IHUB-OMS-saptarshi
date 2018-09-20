@@ -1,0 +1,176 @@
+<?xml version="1.0"?>
+<!--
+/* ===========================================================================
+* Copyright (c) 2008, 2013, Oracle and/or its affiliates. All rights reserved.
+ * ===========================================================================
+ * $Header: rgbustores/modules/exportfile/config/RTLogExtractConfig.xml /rgbustores_13.4x_generic_branch/4 2013/08/12 21:55:48 vkaruppu Exp $
+ * ===========================================================================
+ * NOTES
+ * <other useful comments, qualifications, etc.>
+ *
+ * MODIFIED    (MM/DD/YY)
+ *    vkaruppu  08/12/13 - XbranchMerge spurkaya_16630559_13.4.6_2 from
+ *                         rgbustores_13.4.6_generic_branch
+ *    spurkaya  05/31/13 - Added properties for cash rounding adjustment
+ *    jswan     01/06/12 - XbranchMerge jswan_@user@_from_vikashku_bug12930756
+ *                         from main
+ *    jswan     12/08/11 - Modified to fix gift certificate issue and remove
+ *                         processing of item tables.
+ *    mchellap  06/18/10 - Added Billpay table to transaction
+ *    cgreene   05/26/10 - convert to oracle packaging
+ *    jswan     01/06/10 - Checkin merged files.
+ *    jswan     01/06/10 - Added PO number to TTEND record.
+ *    abondala  01/02/10 - Update Header date
+ *    jswan     02/16/09 - Modified to support changes to the check tender ID
+ *                         type in TTEND.
+ *    jswan     02/06/09 - Modifications to support changes to the TTEND
+ *                         record.
+ *    jswan     02/02/09 - Removed duplicate TR_RDM entry.
+ *    jswan     12/11/08 - Removed CO_MDFR_SLS_RTN_TX from the export.
+ *    jswan     12/11/08 - Checkin to prepare for code review.
+ *    jswan     12/04/08 - Checkin for refresh
+ *    jswan     11/29/08 - Checkin merged files.
+ *    jswan     11/26/08 - Checkin for reresh.
+ *    mdecama   11/14/08 - Item Type, Voucher Number not recorded correctly in
+ *                         the RTLog. If a GC is part of the transaction and
+ *                         then deleted, we should have a TITEM records with
+ *                         ItemType=CGN and VoucherNumber=0
+ *
+ * ===========================================================================
+ */
+-->
+<ENTITY_READERS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="DataReplication.xsd">
+	<COMMENT>
+       	This is a configuration file for the ReSA Transaction Extraction
+    	</COMMENT>
+	<ENTITY_READER type="Transaction">
+		<TABLE table="TR_TRN"/>
+	    <TABLE table="TR_RTL">
+	    	<ASSOCIATION entity="Layaway">
+				<LINK_FIELD field="ID_LY"/>
+			</ASSOCIATION>
+			<ASSOCIATION entity="Order">
+				<LINK_FIELD field="ID_ORD"/>
+			</ASSOCIATION>
+			<ASSOCIATION entity="CustomerTable">
+				<LINK_FIELD field="ID_CT"/>
+			</ASSOCIATION>
+		</TABLE>
+       <!--  <TABLE table="TR_RTL_BPAY"/>
+		<TABLE table="TR_VD_PST"/> -->
+		<TABLE table="TR_LTM_SLS_RTN">
+            <!-- <ASSOCIATION entity="MerchandiseHierarchyAssociation">
+				      <LINK_FIELD field = "ID_MRHRC_GP" targetField="ID_MRHRC_GP_CHLD"/>
+		    </ASSOCIATION> -->
+		</TABLE>
+		<!-- <TABLE table="DO_CRD_GF"/>
+		<TABLE table="TR_ITM_CPN_TND"/>
+		<TABLE table="TR_LON_TND"/>
+		<TABLE table="TR_LTM_CHK_TND"/> -->
+		<TABLE table="TR_LTM_CRDB_CRD_TN"/>
+		<TABLE table="TR_LTM_GF_CF_TND"/>
+		<!-- <TABLE table="TR_LTM_GF_CRD_TND"/> -->
+		<TABLE table="TR_LTM_CR_STR_TND"/>
+       <!--  <TABLE table="TR_LTM_PRCH_ORD_TND"/> -->
+		<TABLE table="TR_LTM_TND"/>
+       <!--  <TABLE table="TR_LTM_TND_CHN"/>		
+		<TABLE table="TR_PKP_TND"/>
+		<TABLE table="TR_RCV_FND"/>
+		<TABLE table="TR_SLS_PS_NO"/> -->
+		<TABLE table="TR_LTM_RTL_TRN"/>
+		<!-- <TABLE table="CO_MDFR_CMN"/> -->
+		<TABLE table="OR_LTM"/>
+		<TABLE table="TR_LTM_SLS_RTN_TX">
+			<!-- <ASSOCIATION entity="TaxAuthority">
+				<LINK_FIELD field="ID_ATHY_TX"/>
+			</ASSOCIATION>
+			<ASSOCIATION entity="TaxRule">
+				<LINK_FIELD field="ID_ATHY_TX"/>
+				<LINK_FIELD field="ID_GP_TX"/>
+			</ASSOCIATION> -->
+		</TABLE>
+		<!-- <TABLE table="TR_STR_OPN_CL">
+			<ASSOCIATION entity="BatchCountTable">
+				<LINK_FIELD field="ID_STR_RT"/>
+				<LINK_FIELD field="DC_DY_BSN"/>
+			</ASSOCIATION>
+		</TABLE>
+		<TABLE table="TR_TL_OPN_CL">
+			<ASSOCIATION entity="TillTable">
+				<LINK_FIELD field="ID_STR_RT"/>
+				<LINK_FIELD field="ID_RPSTY_TND"/>
+			</ASSOCIATION>
+			<ASSOCIATION entity="TillTotals">
+				<LINK_FIELD field="ID_STR_RT"/>
+				<LINK_FIELD field="ID_RPSTY_TND"/>
+				<LINK_FIELD field="TS_TM_TRN"/>
+			</ASSOCIATION>
+		</TABLE>
+		<TABLE table="TR_WS_OPN_CL"/> -->
+		<TABLE table="TR_LTM_DSC"/>
+		<TABLE table="TR_LTM_PRM"/>
+		<TABLE table="CO_MDFR_RTL_PRC"/>
+		<TABLE table="TR_MDFR_SLS_RTN_PRC"/>
+		<!-- <TABLE table="DO_CF_GF"/> -->
+		<TABLE table="SHP_RDS_SLS_RTN"/>
+		<!--  <TABLE table="SHP_RDS_SLS_RTN_TX">
+			<ASSOCIATION entity="TaxAuthority">
+				<LINK_FIELD field="ID_ATHY_TX"/>
+			</ASSOCIATION>
+			<ASSOCIATION entity="TaxRule">
+				<LINK_FIELD field="ID_ATHY_TX"/>
+				<LINK_FIELD field="ID_GP_TX"/>
+			</ASSOCIATION>
+		</TABLE>
+		<TABLE table="TR_RDM"/>
+		<TABLE table="AS_ITM_UNK"/>
+		<TABLE table="TR_LTM_PYAN"/> -->
+		<TABLE table="TR_LTM_SLS_RTN_ORD"/>
+		<!-- <TABLE table="TR_RTL_LY"/> -->
+	</ENTITY_READER>
+	<ENTITY_READER type="CustomerTable">
+		<TABLE table="PA_CT"/>
+	</ENTITY_READER>
+
+	<ENTITY_READER type="Order">
+		<TABLE table="OR_ORD"/>
+	</ENTITY_READER>
+
+	<!-- <ENTITY_READER type="Layaway">
+		<TABLE table="AS_LY"/>
+	</ENTITY_READER>
+
+	<ENTITY_READER type="TaxAuthority">
+		<TABLE table="PA_ATHY_TX"/>
+	</ENTITY_READER>
+
+	<ENTITY_READER type="TaxRule">
+		<TABLE table="RU_TX_GP"/>
+	</ENTITY_READER>
+
+	<ENTITY_READER type="TillTotals">
+		Finding the correct row in this table requires manipulation of the business date field values.
+		<TABLE table="LE_HST_TL_TND" preProcess="oracle.retail.stores.domain.manager.datareplication.exporter.TillStartTimeConverter"/>
+	</ENTITY_READER>
+
+	<ENTITY_READER type="TillTable">
+		<TABLE table="AS_TL"/>
+	</ENTITY_READER>
+
+	<ENTITY_READER type="MerchandiseHierarchyAssociation">
+	       <TABLE table="ST_ASCTN_MRHRC">
+		       <ASSOCIATION entity="MerchandiseHierarchyLevel">
+			      <LINK_FIELD field="ID_MRHRC_LV"/>
+		       </ASSOCIATION>
+		   </TABLE>
+	</ENTITY_READER>
+
+	<ENTITY_READER type="MerchandiseHierarchyLevel">
+		<TABLE table="CO_MRHRC_LV"/>
+	</ENTITY_READER>
+
+	<ENTITY_READER type="BatchCountTable">
+		<TABLE table="CA_DY_BSN_BTCH"/>
+	</ENTITY_READER>
+ -->
+</ENTITY_READERS>

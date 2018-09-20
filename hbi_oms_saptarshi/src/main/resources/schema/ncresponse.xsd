@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="ncresponse">
+		<xs:complexType>
+			<xs:attribute name="orderID" type="xs:string" use="optional"/>
+			<xs:attribute name="PAYID" type="xs:string" use="optional"/>
+			<xs:attribute name="PAYIDSUB" type="xs:string" use="optional"/>
+			<xs:attribute name="NCSTATUS" type="xs:string" use="optional"/>
+			<xs:attribute name="NCERROR" type="xs:string" use="optional"/>
+			<xs:attribute name="NCERRORPLUS" type="xs:string" use="optional"/>
+			<xs:attribute name="ACCEPTANCE" type="xs:string" use="optional"/>
+			<xs:attribute name="STATUS" type="xs:string" use="optional"/>
+			<xs:attribute name="amount" type="xs:string" use="optional"/>
+			<xs:attribute name="currency" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

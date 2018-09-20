@@ -1,0 +1,502 @@
+<?xml version="1.0"?>
+<!--
+/* ===========================================================================
+* Copyright (c) 2008, 2011, Oracle and/or its affiliates. All rights reserved. 
+ * ===========================================================================
+ * $Header: rgbustores/modules/exportfile/config/RTLogFormat.xml /rgbustores_13.4x_generic_branch/4 2011/10/19 13:41:31 jswan Exp $
+ * ===========================================================================
+ * NOTES
+ * <other useful comments, qualifications, etc.>
+ *
+ * MODIFIED    (MM/DD/YY)
+ *    jswan     10/19/11 - Modified the version number.
+ *    jswan     10/12/11 - Fixed ChequeNumber field type.
+ *    rrkohli   07/19/11 - encryption CR
+ *    jswan     01/15/10 - Changed format do to ReSA spec change.
+ *    abondala  01/02/10 - Update Header date
+ *    jswan     12/01/09 - RTLog modifications for release 13.2
+ *    jswan     03/12/09 - Added fields to THead Record for Till Close.
+ *    jswan     02/28/09 - Second code review changes.
+ *    jswan     02/16/09 - Code review
+ *    jswan     02/16/09 - Modified to support changes to the check tender ID
+ *                         type in TTEND.
+ *    jswan     02/13/09 - Fixed paidin, paidout, loan and pick TTEND records.
+ *    jswan     02/11/09 - Fixed issue with original transaction id in Void
+ *                         Transactions cause by forward port.
+ *    jswan     02/11/09 - Checkin for refresh
+ *    jswan     02/09/09 - Modifications from code review and change to
+ *                         ChequeAccountNumber field length.
+ *    jswan     02/06/09 - Modifications to support changes to the TTEND
+ *                         record.
+ *    jswan     01/09/09 - Modified to support tax rules that don't have a tax
+ *                         rate.
+ *    jswan     12/12/08 - Update for code review.
+ *    jswan     12/11/08 - Checkin to prepare for code review.
+ *    jswan     12/04/08 - Checkin for refresh
+ *    jswan     11/29/08 - Checkin merged files.
+ *    jswan     11/26/08 - Checkin for reresh.
+ *    mdecama   11/17/08 - Rollback to previous version. Vouchers and Credit
+ *                         Card numbers should have type=byte.
+ *
+ * ===========================================================================
+ */
+-->
+<RECORD_FORMATS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="RecordFormatDescriptor.xsd">
+	<COMMENT>
+       This file defines the format of the ReSA RTLOG
+    </COMMENT>
+    <RECORD_FORMAT_VERSION version="V.15.0.1"/>
+	<RECORD_FORMAT name="FileHeader">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="FHEAD"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="FileType" type="char" length="4" value="RTLG"/>
+		<FIELD_FORMAT name="FileCreateDate" type="datetime" length="14"/>
+		<FIELD_FORMAT name="BusinessDate" type="date" length="8"/>
+		<FIELD_FORMAT name="LocationNumber" type="char" length="10"/>
+		<FIELD_FORMAT name="ReferenceNumber" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="OriginatingSystem" type="char" length="3" value="OMS"/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="TransactionHeader">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="THEAD"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<!-- Actually tender respository (till) -->
+		<FIELD_FORMAT name="Register" type="char" length="5"/>
+		<FIELD_FORMAT name="RegisterTransactionDate" type="datetime"/>
+		<!-- length="14" -->
+		<!-- The WorkstationID is actually a part of the TransactionNumber.
+		     This concatenation of values is the ReSA solution to the Till/Register issue. -->
+		<FIELD_FORMAT name="WorkstationID" type="integer" length="3"/>
+		<FIELD_FORMAT name="TransactionNumber" type="integer" length="7"/>
+		<FIELD_FORMAT name="Cashier" type="char" length="10"/>
+		<FIELD_FORMAT name="Salesperson" type="char" length="10"/>
+		<FIELD_FORMAT name="TransactionType" type="char" length="6"/>
+		<FIELD_FORMAT name="SubTransactionType" type="char" length="6"/>
+		<!-- RTLog documentation says this field is numeric; -->
+		<!-- however, it must be blank when it has no value. -->
+		<FIELD_FORMAT name="OriginalWorkstationID" type="integer" length="3" padNoValueWithSpaces="true"/>
+		<!-- RTLog documentation says this field is numeric; -->
+		<!-- however, it must be blank when it has no value. -->
+		<FIELD_FORMAT name="OriginalTransactionNumber" type="integer" length="7" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="Orig_reg_no" type="char" length="5"/>
+		<FIELD_FORMAT name="ReasonCode" type="char" length="6"/>
+		<FIELD_FORMAT name="VendorNumber" type="char" length="10" value=" "/>
+		<FIELD_FORMAT name="VendorInvoiceNumber" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="PaymentRefernceNumber" type="char" length="16" value=" "/>
+		<FIELD_FORMAT name="ProofOfDeliveryNumber" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber1" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber2" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber3" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber4" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ValueSign" type="char" length="1" value="P"/>
+		<!-- RTLog documentation says this field is numeric; -->
+		<!-- however, it must be blank when it has no value. -->
+		<FIELD_FORMAT name="Value" type="idecimal" length="16.4" value="0" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="BannerId" type="char" length="4" value=" "/>
+		<!-- <FIELD_FORMAT name="CustomerOrderHeadId" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="CustomerOrderHeadDate" type="char" length="14" value=" "/> -->
+		<FIELD_FORMAT name="RoundedAmountSign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="RoundedAmount" type="idecimal" length="16.4" value="0" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="RoundedOffAmountSign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="RoundedOffAmount" type="idecimal" length="16.4" value="0" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="CreditPromoID" type="char" length="10" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber25" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber26" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber27" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="TransactionProcessingSystem" type="char" length="3" value="OMS"/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="TransactionItem">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="TITEM"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="ItemStatus" type="char" length="6" value="S"/>
+		<FIELD_FORMAT name="ItemType" type="char" length="6" value="ITEM"/>
+		<FIELD_FORMAT name="ItemNumberType" type="char" length="6" value="ITEM"/>
+		<FIELD_FORMAT name="FormatID" type="char" length="1"/>
+		<FIELD_FORMAT name="Item" type="char" length="25"/>
+		<FIELD_FORMAT name="ReferenceItem" type="char" length="25"/>
+		<FIELD_FORMAT name="NonMerchandiceItem" type="char" length="25"/>
+		<FIELD_FORMAT name="Voucher" type="byte" length="25"/>
+		<FIELD_FORMAT name="Department" type="integer" length="4"/>
+		<FIELD_FORMAT name="Class" type="integer" length="4"/>
+		<FIELD_FORMAT name="Subclass" type="integer" length="4"/>
+		<FIELD_FORMAT name="QuantitySign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="Quantity" type="idecimal" length="8.4"/>
+		<FIELD_FORMAT name="UnitOfMeasure" type="char" length="4"/>
+		<FIELD_FORMAT name="UnitRetail" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="OverrideReason" type="char" length="6"/>
+		<FIELD_FORMAT name="OriginalUnitRetail" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="TaxableIndicator" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="Pump" type="char" length="8"/>
+		<FIELD_FORMAT name="ReferenceNumber5" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber6" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber7" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber8" type="char" length="30"/>
+		<FIELD_FORMAT name="Item_swiped_ind" type="char" length="1" value="Y"/>
+		<FIELD_FORMAT name="ReturnReasonCode" type="char" length="6"/>
+		<FIELD_FORMAT name="Salesperson" type="char" length="10"/>
+		<FIELD_FORMAT name="Expiration_date" type="date"/>
+		<!-- length="8" -->
+		<FIELD_FORMAT name="DropShipInd" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="UOMqty" type="idecimal" length="8.4" value="1"/>
+		<FIELD_FORMAT name="CatchWeightInd" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="SellingItem" type="char" length="25" value=" "/>
+		<!-- RTLog documentation says this field is numeric; -->
+		<!-- however, it must be blank when it has no value. -->
+		<!-- <FIELD_FORMAT name="CustomerOrderLineNo" type="integer" length="6"  padNoValueWithSpaces="true"/> -->
+		<FIELD_FORMAT name="CustomerOrderLineNo" type="integer" length="6" leftJustifyValueWithSpaces="true"/>
+		<!-- RTLog documentation says this field is numeric; -->
+		<!-- however, it must be blank when it has no value. -->
+		<FIELD_FORMAT name="MediaId" type="integer" length="10" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="TotalTaxAmount" type="idecimal" length="16.5"/>
+		<!-- In ORPOS parlance this the serial number. -->
+		<FIELD_FORMAT name="UINumber" type="char" length="128" value=" "/>
+		<FIELD_FORMAT name="CustomerOrderNumber" value=" " length="48" type="char"/>
+		<FIELD_FORMAT name="CustomerOrderDate" value=" " length="14" type="char"/>
+		<FIELD_FORMAT name="FulfillmentOrderNumber" value=" " length="48" type="char"/>
+		<FIELD_FORMAT name="NoInventoryReturnIndicator" value=" " length="1" type="char"/>
+		<FIELD_FORMAT name="SalesType" value="R" length="1" type="char"/>
+		<FIELD_FORMAT name="ReturnWarehouse" value=" " length="10" type="char"/>
+		<FIELD_FORMAT name="ReturnDisposition" value=" " length="10" type="char"/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="ItemDiscount">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="IDISC"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="RMSPromotionType" type="char" length="6"/>
+		<FIELD_FORMAT name="DiscountReferenceNumber" type="integer" length="10" leftJustifyValueWithSpaces="true"/>
+		<FIELD_FORMAT name="DiscountType" type="char" length="6"/>
+		<FIELD_FORMAT name="CouponNumber" type="char" length="40"/>
+		<FIELD_FORMAT name="CouponReferenceNumber" type="char" length="16"/>
+		<FIELD_FORMAT name="QuantitySign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="Quantity" type="idecimal" length="8.4"/>
+		<FIELD_FORMAT name="UnitDiscountAmount" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="ReferenceNumber13" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber14" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber15" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber16" type="char" length="30"/>
+		<FIELD_FORMAT name="UOMqty" type="idecimal" length="8.4" value="1"/>
+		<FIELD_FORMAT name="CatchWeightInd" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="PromoComponent" type="integer" length="10" leftJustifyValueWithSpaces="true"/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="TransactionTax">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="TTAX"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="TaxCode" type="char" length="6" value="TOTTAX"/>
+		<FIELD_FORMAT name="TaxSign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="TaxAmount" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="Ref_no17" type="char" length="30"/>
+		<FIELD_FORMAT name="Ref_no18" type="char" length="30"/>
+		<FIELD_FORMAT name="Ref_no19" type="char" length="30"/>
+		<FIELD_FORMAT name="Ref_no20" type="char" length="30"/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="TransactionTender">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="TTEND"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="TenderTypeGroup" type="char" length="6"/>
+		<FIELD_FORMAT name="TenderTypeID" type="char" length="6"/>
+		<FIELD_FORMAT name="TenderSign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="TenderAmount" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="Cc_no" type="byte" length="40"/>
+		<FIELD_FORMAT name="Cc_auth_no" type="char" length="16"/>
+		<FIELD_FORMAT name="ccAuthorizationSource" type="char" length="6" value=""/>
+		<FIELD_FORMAT name="ccCardholderVerification" type="char" length="6"/>
+		<!-- length="8" -->
+		<FIELD_FORMAT name="ccExpirationDate" type="date"/>
+		<FIELD_FORMAT name="ccEntryMode" type="char" length="6"/>
+		<FIELD_FORMAT name="ccTerminalID" type="char" length="5"/>
+		<FIELD_FORMAT name="ccSpecialCondition" type="char" length="6" value=""/>
+		<FIELD_FORMAT name="Voucher_no" type="byte" length="25"/>
+		<FIELD_FORMAT name="CouponNumber" type="char" length="40"/>
+		<FIELD_FORMAT name="CouponReferenceNumber" type="char" length="16"/>
+		<FIELD_FORMAT name="ChequeAccountNumber" type="char" length="30"/>
+		<FIELD_FORMAT name="ChequeNumber" type="integer" length="10" value="0" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="IdentificationMethod" type="char" length="6"/>
+		<FIELD_FORMAT name="IdentificationId" type="char" length="40"/>
+		<FIELD_FORMAT name="OriginalCurrency" type="char" length="3"/>
+		<FIELD_FORMAT name="OriginalCurrencyAmount" type="idecimal" length="16.4" value="0" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="ReferenceNo9" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNo10" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNo11" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNo12" type="char" length="30"/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="TransactionTail">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="TTAIL"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="TransactionRecordCounter" type="integer" length="10"/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="FileTail">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="FTAIL"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="FileRecordCounter" type="integer" length="10"/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="TransactionShippingItem">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="TITEM"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="ItemStatus" type="char" length="6" value="S"/>
+		<FIELD_FORMAT name="ItemType" type="char" length="6" value="NMITEM"/>
+		<FIELD_FORMAT name="ItemNumberType" type="char" length="6" value="ITEM"/>
+		<FIELD_FORMAT name="FormatID" type="char" length="1"/>
+		<FIELD_FORMAT name="Item" type="char" length="25"/>
+		<FIELD_FORMAT name="ReferenceItem" type="char" length="25"/>
+		<FIELD_FORMAT name="NonMerchandiceItem" type="char" length="25" value="SHIPPING CHARGE"/>
+		<FIELD_FORMAT name="Voucher" type="byte" length="25"/>
+		<FIELD_FORMAT name="Department" type="integer" length="4"/>
+		<FIELD_FORMAT name="Class" type="integer" length="4"/>
+		<FIELD_FORMAT name="Subclass" type="integer" length="4"/>
+		<FIELD_FORMAT name="QuantitySign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="Quantity" type="idecimal" length="8.4" value="1"/>
+		<FIELD_FORMAT name="UnitOfMeasure" type="char" length="4"  value="EA"/>
+		<FIELD_FORMAT name="UnitRetail" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="OverrideReason" type="char" length="6"/>
+		<FIELD_FORMAT name="OriginalUnitRetail" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="TaxableIndicator" type="char" length="1" value="Y"/>
+		<FIELD_FORMAT name="Pump" type="char" length="8"/>
+		<FIELD_FORMAT name="ReferenceNumber5" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber6" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber7" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber8" type="char" length="30"/>
+		<FIELD_FORMAT name="Item_swiped_ind" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="ReturnReasonCode" type="char" length="6"/>
+		<FIELD_FORMAT name="Salesperson" type="char" length="10"/>
+		<FIELD_FORMAT name="Expiration_date" type="date"/>
+		<!-- length="8" -->
+		<FIELD_FORMAT name="DropShipInd" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="UOMqty" type="idecimal" length="8.4" value="1"/>
+		<FIELD_FORMAT name="CatchWeightInd" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="SellingItem" type="char" length="25" value=" "/>
+		<FIELD_FORMAT name="CustomerOrderLineNo" type="integer" length="6" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="MediaId" type="integer" length="10" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="TotalTaxAmount" type="idecimal" length="16.5"/>
+		<!-- In ORPOS parlance this the serial number. -->
+		<FIELD_FORMAT name="UINumber" type="char" length="128" value=" "/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="ItemRestockingFee">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="TITEM"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="ItemStatus" type="char" length="6" value="S"/>
+		<FIELD_FORMAT name="ItemType" type="char" length="6" value="NMITEM"/>
+		<FIELD_FORMAT name="ItemNumberType" type="char" length="6" value="ITEM"/>
+		<FIELD_FORMAT name="FormatID" type="char" length="1"/>
+		<FIELD_FORMAT name="Item" type="char" length="25"/>
+		<FIELD_FORMAT name="ReferenceItem" type="char" length="25"/>
+		<FIELD_FORMAT name="NonMerchandiceItem" type="char" length="25" value="RESTOCKING FEE"/>
+		<FIELD_FORMAT name="Voucher" type="byte" length="25"/>
+		<FIELD_FORMAT name="Department" type="integer" length="4"/>
+		<FIELD_FORMAT name="Class" type="integer" length="4"/>
+		<FIELD_FORMAT name="Subclass" type="integer" length="4"/>
+		<FIELD_FORMAT name="QuantitySign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="Quantity" type="idecimal" length="8.4" value="1"/>
+		<FIELD_FORMAT name="UnitOfMeasure" type="char" length="4" value="EA  "/>
+		<FIELD_FORMAT name="UnitRetail" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="OverrideReason" type="char" length="6"/>
+		<FIELD_FORMAT name="OriginalUnitRetail" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="TaxableIndicator" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="Pump" type="char" length="8"/>
+		<FIELD_FORMAT name="ReferenceNumber5" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber6" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber7" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber8" type="char" length="30"/>
+		<FIELD_FORMAT name="Item_swiped_ind" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="ReturnReasonCode" type="char" length="6"/>
+		<FIELD_FORMAT name="Salesperson" type="char" length="10"/>
+		<FIELD_FORMAT name="Expiration_date" type="date"/>
+		<!-- length="8" -->
+		<FIELD_FORMAT name="DropShipInd" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="UOMqty" type="idecimal" length="8.4" value="1"/>
+		<FIELD_FORMAT name="CatchWeightInd" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="SellingItem" type="char" length="25" value=" "/>
+		<FIELD_FORMAT name="CustomerOrderLineNo" type="integer" length="6" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="MediaId" type="integer" length="10" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="TotalTaxAmount" type="idecimal" length="16.5"/>
+		<!-- In ORPOS parlance this the serial number. -->
+		<FIELD_FORMAT name="UINumber" type="char" length="128" value=" "/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="TransactionHeaderTotal">
+		<FIELD_FORMAT name="FileRecordDesciptor"     type="char" length="5" value="THEAD"/>
+		<FIELD_FORMAT name="FileLineIdentifier"      type="integer" length="10"/>
+		<!-- Actually tender respository (till) -->
+		<FIELD_FORMAT name="Register"                type="char" length="5"/>
+		<FIELD_FORMAT name="RegisterTransactionDate" type="datetime"/>
+		<!-- length="14" -->
+		<!-- The WorkstationID is actually a part of the TransactionNumber.
+		     This concatenation of values is the ReSA solution to the Till/Register issue. -->
+		<FIELD_FORMAT name="WorkstationID"           type="integer" length="3"/>
+		<FIELD_FORMAT name="TransactionNumber"       type="integer" length="7"/>
+		<FIELD_FORMAT name="Cashier"                 type="char" length="10"/>
+		<FIELD_FORMAT name="Salesperson"             type="char" length="10"/>
+		<FIELD_FORMAT name="TransactionType"         type="char" length="6" value="TOTAL"/>
+		<FIELD_FORMAT name="SubTransactionType"      type="char" length="6" value="CTILLT"/>
+		<FIELD_FORMAT name="OriginalWorkstationID"   type="integer" length="3" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="OriginalTransactionNumber" type="integer" length="7" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="Orig_reg_no"             type="char" length="5"/>
+		<FIELD_FORMAT name="ReasonCode"              type="char" length="6"/>
+		<FIELD_FORMAT name="VendorNumber"            type="char" length="10" value=" "/>
+		<FIELD_FORMAT name="VendorInvoiceNumber"     type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="PaymentRefernceNumber"   type="char" length="16" value=" "/>
+		<FIELD_FORMAT name="ProofOfDeliveryNumber"   type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber1"        type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber2"        type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber3"        type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber4"        type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ValueSign"               type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="Value"                   type="idecimal" length="16.4" value="0"/>
+		<FIELD_FORMAT name="BannerId"                type="char" length="4" value=" "/>
+		<!-- <FIELD_FORMAT name="CustomerOrderHeadId"     type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="CustomerOrderHeadDate"   type="char" length="14" value=" "/> -->
+		<FIELD_FORMAT name="RoundedAmountSign"       type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="RoundedAmount"           type="idecimal" length="16.4" value="0" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="RoundedOffAmountSign"    type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="RoundedOffAmount"        type="idecimal" length="16.4" value="0" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="CreditPromoID"           type="char" length="10" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber25" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber26" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber27" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="TransactionProcessingSystem" type="char" length="3" value="OMS"/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="OtherTransactionTender">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="TTEND"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="TenderTypeGroup" type="char" length="6" value="CASH"/>
+		<FIELD_FORMAT name="TenderTypeID" type="char" length="6" value="1000"/>
+		<FIELD_FORMAT name="TenderSign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="TenderAmount" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="Cc_no" type="byte" length="40"/>
+		<FIELD_FORMAT name="Cc_auth_no" type="char" length="16"/>
+		<FIELD_FORMAT name="ccAuthorizationSource" type="char" length="6" value=""/>
+		<FIELD_FORMAT name="ccCardholderVerification" type="char" length="6"/>
+		<FIELD_FORMAT name="ccExpirationDate" type="date"/>
+		<!-- length="8" -->
+		<FIELD_FORMAT name="ccEntryMode" type="char" length="6"/>
+		<FIELD_FORMAT name="ccTerminalID" type="char" length="5"/>
+		<FIELD_FORMAT name="ccSpecialCondition" type="char" length="6" value=""/>
+		<FIELD_FORMAT name="Voucher_no" type="byte" length="25"/>
+		<FIELD_FORMAT name="CouponNumber" type="char" length="40"/>
+		<FIELD_FORMAT name="CouponReferenceNumber" type="char" length="16"/>
+		<FIELD_FORMAT name="ChequeAccountNumber" type="char" length="30"/>
+		<FIELD_FORMAT name="ChequeNumber" type="integer" length="10" value="0" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="IdentificationMethod" type="char" length="6"/>
+		<FIELD_FORMAT name="IdentificationId" type="char" length="40"/>
+		<FIELD_FORMAT name="OriginalCurrency" type="char" length="3"/>
+		<FIELD_FORMAT name="OriginalCurrencyAmount" type="idecimal" length="16.4" value="0" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="ReferenceNo9" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNo10" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNo11" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNo12" type="char" length="30"/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="TransactionFee">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="TITEM"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="ItemStatus" type="char" length="6" value="S"/>
+		<FIELD_FORMAT name="ItemType" type="char" length="6" value="NMITEM"/>
+		<FIELD_FORMAT name="ItemNumberType" type="char" length="6" value="ITEM"/>
+		<FIELD_FORMAT name="FormatID" type="char" length="1"/>
+		<FIELD_FORMAT name="Item" type="char" length="25"/>
+		<FIELD_FORMAT name="ReferenceItem" type="char" length="25"/>
+		<FIELD_FORMAT name="NonMerchandiceItem" type="char" length="25" value="LAYAWAY CREATE FEE ITM ID"/>
+		<FIELD_FORMAT name="Voucher" type="byte" length="25"/>
+		<FIELD_FORMAT name="Department" type="integer" length="4"/>
+		<FIELD_FORMAT name="Class" type="integer" length="4"/>
+		<FIELD_FORMAT name="Subclass" type="integer" length="4"/>
+		<FIELD_FORMAT name="QuantitySign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="Quantity" type="idecimal" length="8.4" value="1"/>
+		<FIELD_FORMAT name="UnitOfMeasure" type="char" length="4" value="EA  "/>
+		<FIELD_FORMAT name="UnitRetail" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="OverrideReason" type="char" length="6"/>
+		<FIELD_FORMAT name="OriginalUnitRetail" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="TaxableIndicator" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="Pump" type="char" length="8"/>
+		<FIELD_FORMAT name="ReferenceNumber5" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber6" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber7" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber8" type="char" length="30"/>
+		<FIELD_FORMAT name="Item_swiped_ind" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="ReturnReasonCode" type="char" length="6"/>
+		<FIELD_FORMAT name="Salesperson" type="char" length="10"/>
+		<FIELD_FORMAT name="Expiration_date" type="date"/>
+		<!-- length="8" -->
+		<FIELD_FORMAT name="DropShipInd" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="UOMqty" type="idecimal" length="8.4" value="1"/>
+		<FIELD_FORMAT name="CatchWeightInd" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="SellingItem" type="char" length="25" value=" "/>
+		<FIELD_FORMAT name="CustomerOrderLineNo" type="integer" length="6" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="MediaId" type="integer" length="10" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="TotalTaxAmount" type="idecimal" length="16.5"/>
+		<!-- In ORPOS parlance this the serial number. -->
+		<FIELD_FORMAT name="UINumber" type="char" length="128" value=" "/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="ItemGlobalTax">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="IGTAX"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="TaxAuthority" type="integer" length="10" value="0"/>
+		<FIELD_FORMAT name="TaxCode" type="char" length="6"/>
+		<FIELD_FORMAT name="TaxRate" type="idecimal" length="16.4"  value="0" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="TaxAmountSign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="TaxAmount" type="idecimal" length="16.5"/>
+		<FIELD_FORMAT name="ReferenceNumber21" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber22" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber23" type="char" length="30" value=" "/>
+		<FIELD_FORMAT name="ReferenceNumber24" type="char" length="30" value=" "/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="TransactionPayment">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="TPYMT"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="Sign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="Amount" type="idecimal" length="16.4" value="0"/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="LayawayDeletionFee">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="TITEM"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="ItemStatus" type="char" length="6" value="S"/>
+		<FIELD_FORMAT name="ItemType" type="char" length="6" value="NMITEM"/>
+		<FIELD_FORMAT name="ItemNumberType" type="char" length="6" value="ITEM"/>
+		<FIELD_FORMAT name="FormatID" type="char" length="1"/>
+		<FIELD_FORMAT name="Item" type="char" length="25"/>
+		<FIELD_FORMAT name="ReferenceItem" type="char" length="25"/>
+		<FIELD_FORMAT name="NonMerchandiceItem" type="char" length="25" value="LAYAWAY DELETE FEE ITM ID"/>
+		<FIELD_FORMAT name="Voucher" type="byte" length="25"/>
+		<FIELD_FORMAT name="Department" type="integer" length="4"/>
+		<FIELD_FORMAT name="Class" type="integer" length="4"/>
+		<FIELD_FORMAT name="Subclass" type="integer" length="4"/>
+		<FIELD_FORMAT name="QuantitySign" type="char" length="1" value="P"/>
+		<FIELD_FORMAT name="Quantity" type="idecimal" length="8.4" value="1"/>
+		<FIELD_FORMAT name="UnitOfMeasure" type="char" length="4" value="EA  "/>
+		<FIELD_FORMAT name="UnitRetail" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="OverrideReason" type="char" length="6"/>
+		<FIELD_FORMAT name="OriginalUnitRetail" type="idecimal" length="16.4"/>
+		<FIELD_FORMAT name="TaxableIndicator" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="Pump" type="char" length="8"/>
+		<FIELD_FORMAT name="ReferenceNumber5" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber6" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber7" type="char" length="30"/>
+		<FIELD_FORMAT name="ReferenceNumber8" type="char" length="30"/>
+		<FIELD_FORMAT name="Item_swiped_ind" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="ReturnReasonCode" type="char" length="6"/>
+		<FIELD_FORMAT name="Salesperson" type="char" length="10"/>
+		<FIELD_FORMAT name="Expiration_date" type="date"/>
+		<!-- length="8" -->
+		<FIELD_FORMAT name="DropShipInd" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="UOMqty" type="idecimal" length="8.4" value="1"/>
+		<FIELD_FORMAT name="CatchWeightInd" type="char" length="1" value="N"/>
+		<FIELD_FORMAT name="SellingItem" type="char" length="25" value=" "/>
+		<FIELD_FORMAT name="CustomerOrderLineNo" type="integer" length="6" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="MediaId" type="integer" length="10" padNoValueWithSpaces="true"/>
+		<FIELD_FORMAT name="TotalTaxAmount" type="idecimal" length="16.5"/>
+		<!-- In ORPOS parlance this the serial number. -->
+		<FIELD_FORMAT name="UINumber" type="char" length="128" value=" "/>
+	</RECORD_FORMAT>
+	<RECORD_FORMAT name="TransactionCustomer">
+		<FIELD_FORMAT name="FileRecordDesciptor" type="char" length="5" value="TCUST"/>
+		<FIELD_FORMAT name="FileLineIdentifier" type="integer" length="10"/>
+		<FIELD_FORMAT name="CustomerID" type="char" length="16" />
+		<FIELD_FORMAT name="CustomerTypeID" type="char" length="6" value="CUSTID"/>
+		<FIELD_FORMAT name="CustomerName" type="char" length="120" />
+		<FIELD_FORMAT name="Address1" type="char" length="240" />
+		<FIELD_FORMAT name="Address2" type="char" length="240" />
+		<FIELD_FORMAT name="City" type="char" length="120" />
+		<FIELD_FORMAT name="State" type="char" length="12" />
+		<FIELD_FORMAT name="ZipCode" type="char" length="30" />
+		<FIELD_FORMAT name="Country" type="char" length="3" />
+		<FIELD_FORMAT name="HomePhone" type="char" length="20" />
+		<FIELD_FORMAT name="WorkPhone" type="char" length="20" />
+		<FIELD_FORMAT name="Email" type="char" length="100" />
+		<FIELD_FORMAT name="Birthdate" type="char" length="8" />
+	</RECORD_FORMAT>
+</RECORD_FORMATS>

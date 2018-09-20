@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="Message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CustomerHistoryRequest">
+					<xs:complexType>
+						<xs:attribute name="company" type="xs:string"/>
+						<xs:attribute name="customer_number" type="xs:string"/>
+						<xs:attribute name="alternate_sold_to_id" type="xs:string"/>
+						<xs:attribute name="number_of_orders" type="xs:string"/>
+						<xs:attribute name="direct_order_number" type="xs:string"/>
+						<xs:attribute name="direct_order_ship_to_nbr" type="xs:string"/>
+						<xs:attribute name="alternate_order_number" type="xs:string"/>
+						<xs:attribute name="send_detail" type="xs:string"/>
+						<xs:attribute name="exclude_order_channel" type="xs:string"/>
+						<xs:attribute name="last_name" type="xs:string"/>
+						<xs:attribute name="postal_code" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="source" type="xs:string"/>
+			<xs:attribute name="target" type="xs:string"/>
+			<xs:attribute name="type" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:NMTOKEN">
+						<xs:enumeration value="CWCUSTHISTIN"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="resp_qmgr" type="xs:string"/>
+			<xs:attribute name="resp_q" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
